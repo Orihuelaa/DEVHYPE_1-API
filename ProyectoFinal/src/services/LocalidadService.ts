@@ -5,7 +5,7 @@ const API_URL = import.meta.env.VITE_URL_API;
 
 export class LocalidadService extends BackendClient<ILocalidad>{
     constructor(baseUrl:string) {
-        super(`${API_URL}${baseUrl}`);
+        super(`${API_URL}/${baseUrl}`);
     }
 
     async getLocalidadesByProvinciaId(provinciaId: number){

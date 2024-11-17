@@ -1,48 +1,63 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/store";
 import { LocalidadService } from "../../../../services/LocalidadService";
+import { setLocalidadActiva, setLocalidades } from "../../../../redux/slices/localidadSlice";
+import { ILocalidad } from "../../../../endpoints/types/ILocalidad";
+import { useForm } from "../../../../hooks/useForm";
 
 const Localidades = () => {
 
-    const localidadService = new LocalidadService('localidades');
-    const {localidades, localidadActiva} = useAppSelector((state) => state.localidades);
+    const {provinciaActiva} = useAppSelector((state) => state.provincias);
+    const {localidades} = useAppSelector((state) => state.localidades);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         const fetchSucursales = async () => {
-          const sucursalesFromStorage = localStorage.getItem(`sucursales-${empresaActiva?.id}`);
+          const sucursalesFromStorage = localStorage.getItem(`localidades`);
           
           if (sucursalesFromStorage) {
-            dispatch(setSucursales(JSON.parse(sucursalesFromStorage)));
+            dispatch(setLocalidades(JSON.parse(sucursalesFromStorage)));
           } else {
-            const sucursalService = new SucursalService(`sucursales`);
+            const localidadService = new LocalidadService('localidades');
             try {
-              const sucursales_all = await sucursalService.getAllSucursalesPorEmpresaId(empresaActiva!.id); 
-              dispatch(setSucursales(sucursales_all as ISucursal[])); 
-              localStorage.setItem(`sucursales-${empresaActiva?.id}`, JSON.stringify(sucursales_all));
+              const localidades_all = await localidadService.getLocalidadesByProvinciaId(provinciaActiva!.id); 
+              dispatch(setLocalidades(localidades_all as ILocalidad[])); 
+              localStorage.setItem(`localidades`, JSON.stringify(localidades_all));
             } catch (error) {
               console.log(error);
             }
           }
         };
       
-        if (empresaActiva) {
+        if (provinciaActiva) {
           fetchSucursales();
         }
     
         return ()=>{
-          localStorage.removeItem(`sucursales-${empresaActiva?.id}`);
-          dispatch(setSucursales([]));
+          localStorage.removeItem(`localidades`);
+          dispatch(setLocalidades([]));
         }
       
-      }, [dispatch, empresaActiva]);
+      }, [dispatch, provinciaActiva]);
       
+      const { handleChanges } = useForm({
+        id: 0,
+        nombre: '',
+      })
 
-    return (
-        <div>
-        
-        </div>
-  )
+      return (
+        <>
+          <label htmlFor="localidad">Localidad:</label>
+          <select id="localidad" name="nombre" onChange={handleChanges} required >
+            <option value="" selected disabled></option>
+            {localidades.map((localidad) => (
+                <option key={localidad.id} value={localidad.nombre} onClick={()=> dispatch(setLocalidadActiva(localidad))}>
+                    {localidad.nombre}
+                </option>
+            ))}
+          </select>
+        </>
+    )
 }
 
 export default Localidades
