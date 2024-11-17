@@ -1,48 +1,63 @@
 import { useAppDispatch, useAppSelector } from '../../../../hooks/store';
 import { useEffect } from 'react';
 import { ProvinciaService } from '../../../../services/ProvinciaService';
+import { setProvinciaActiva, setProvincias } from '../../../../redux/slices/provinciaSlice';
+import { IProvincia } from '../../../../endpoints/types/IProvincia';
+import { useForm } from '../../../../hooks/useForm';
 
 const Provincias = () => {
 
-    const provinciaService = new ProvinciaService('provincias');
-    const {provincias, provinciaActivo} = useAppSelector((state) => state.provincias);
-    const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        const fetchSucursales = async () => {
-          const sucursalesFromStorage = localStorage.getItem(`sucursales-${empresaActiva?.id}`);
-          
-          if (sucursalesFromStorage) {
-            dispatch(setSucursales(JSON.parse(sucursalesFromStorage)));
-          } else {
-            const sucursalService = new SucursalService(`sucursales`);
-            try {
-              const sucursales_all = await sucursalService.getAllSucursalesPorEmpresaId(empresaActiva!.id); 
-              dispatch(setSucursales(sucursales_all as ISucursal[])); 
-              localStorage.setItem(`sucursales-${empresaActiva?.id}`, JSON.stringify(sucursales_all));
+  const {paisActivo} = useAppSelector((state) => state.paises);
+  const {provincias} = useAppSelector((state) => state.provincias);
+  const dispatch = useAppDispatch();
+  
+  useEffect(() => {
+    const fetchProvincias = async () => {
+      const provinciasFromStorage = localStorage.getItem(`provincias`);
+      
+      if (provinciasFromStorage) {
+        dispatch(setProvincias(JSON.parse(provinciasFromStorage)));
+      } else {
+        try {
+            const provinciaService = new ProvinciaService('provincias');
+              const provincias_all = await provinciaService.getProvinciasByPaisId(paisActivo!.id); 
+              dispatch(setProvincias(provincias_all as IProvincia[])); 
+              localStorage.setItem(`provincias`, JSON.stringify(provincias_all));
             } catch (error) {
               console.log(error);
             }
           }
         };
       
-        if (empresaActiva) {
-          fetchSucursales();
+        if (paisActivo) {
+          fetchProvincias();
         }
     
         return ()=>{
-          localStorage.removeItem(`sucursales-${empresaActiva?.id}`);
-          dispatch(setSucursales([]));
+          localStorage.removeItem(`provincias`);
+          dispatch(setProvincias([]));
         }
       
-      }, [dispatch, empresaActiva]);
-      
+      }, [dispatch, paisActivo]);
 
-    return (
-        <div>
-        
-        </div>
-    )
+      const { handleChanges } = useForm({
+        id: 0,
+        nombre: '',
+      })
+
+      return (
+        <>
+          <label htmlFor="provincia">Provincia:</label>
+          <select id="provincia" name="nombre" onChange={handleChanges} required >
+            <option value="" selected disabled></option>
+            {provincias.map((provincia) => (
+              <option key={provincia.id} value={provincia.nombre} onClick={() => dispatch(setProvinciaActiva(provincia))}>
+                {provincia.nombre}
+              </option>
+            ))}
+          </select>
+        </>
+      )
 }
 
 export default Provincias

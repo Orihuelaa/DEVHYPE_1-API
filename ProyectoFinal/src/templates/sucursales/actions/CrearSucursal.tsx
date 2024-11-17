@@ -7,7 +7,9 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/store";
 import { SucursalService } from "../../../services/SucursalService";
 import { ICreateSucursal } from "../../../endpoints/types/dtos/sucursal/ICreateSucursal";
 import { setSucursales } from "../../../redux/slices/sucursalSlice";
-import Paises from "./formComponents/paises";
+import Paises from "./formComponents/Paises";
+import Provincias from "./formComponents/Provincias";
+import Localidades from "./formComponents/Localidades";
 
 const CrearSucursal = () => {
     
@@ -137,26 +139,8 @@ const CrearSucursal = () => {
                         </select>
 
                         <Paises />
-
-                        <label htmlFor="provincia">Provincia:</label>
-                        <input 
-                            type="text" 
-                            id="provincia"
-                            name="provinciaNombre"
-                            value={values.provinciaNombre}
-                            onChange={handleChanges}
-                            required
-                        />
-
-                        <label htmlFor="localidad">Localidad:</label>
-                        <input 
-                            type="text" 
-                            id="localidad"
-                            name="localidadNombre"
-                            value={values.localidadNombre}
-                            onChange={handleChanges}
-                            required
-                        />
+                        <Provincias />
+                        <Localidades />
 
                         <label htmlFor="latitud">Latitud:</label>
                         <input 
