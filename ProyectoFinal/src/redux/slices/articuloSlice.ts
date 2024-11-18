@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IProductos } from "../../endpoints/types/dtos/productos/IProductos";
 
+
 interface ArticuloState {
     articulos: IProductos[];
     articuloActivo: IProductos | null;
@@ -10,6 +11,7 @@ const initialState: ArticuloState = {
     articulos: [],
     articuloActivo: null,
 };
+
 
 export const articuloSlice = createSlice({
     name: "articulos",
@@ -23,6 +25,7 @@ export const articuloSlice = createSlice({
         },
     },
 });
+
 
 export const { setArticulos, setArticuloActivo } = articuloSlice.actions;
 export default articuloSlice.reducer;
