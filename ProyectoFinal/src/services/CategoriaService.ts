@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_URL_API;
 
 export class CategoriaService extends BackendClient<ICategorias | ICreateCategoria | IUpdateCategoria> {
     constructor(baseUrl:string) {
-        super(`${API_URL}${baseUrl}`);
+        super(`${API_URL}/${baseUrl}`);
     }
 
     async createCategoria(element: ICreateCategoria): Promise<ICategorias | null> {

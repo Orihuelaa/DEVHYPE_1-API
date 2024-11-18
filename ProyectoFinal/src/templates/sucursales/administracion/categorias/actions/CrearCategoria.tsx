@@ -39,7 +39,7 @@ export default function CrearCategoria() {
     <form onSubmit={onSubmit}>
       <h2>Crear una categoria padre</h2>
 
-      <label htmlFor="denominacion"></label>
+      <label htmlFor="denominacion">Denominacion</label>
       <input type="text" name="denominacion" id="denominacion" value={values.denominacion} onChange={handleChanges}/>
       
       <button onClick={()=> navigate(`/admin`)} type="button">Cancelar</button>
