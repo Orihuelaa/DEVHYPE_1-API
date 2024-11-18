@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_URL_API;
 
 export class ArticuloService extends BackendClient<IProductos | ICreateProducto | IUpdateProducto> {
     constructor(baseUrl : string) {
-        super(`${API_URL}${baseUrl}`);
+        super(`${API_URL}/${baseUrl}`);
     }
 
     async createArticulo(element: ICreateProducto): Promise<IProductos | null> {

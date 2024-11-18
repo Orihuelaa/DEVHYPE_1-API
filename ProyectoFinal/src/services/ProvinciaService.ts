@@ -5,7 +5,7 @@ const API_URL = import.meta.env.VITE_URL_API;
 
 export class ProvinciaService extends BackendClient <IProvincia>{
     constructor(baseUrl : string) {
-        super(`${API_URL}${baseUrl}`);
+        super(`${API_URL}/${baseUrl}`);
     }
 
     async getProvinciasByPaisId(paisId: number): Promise<IProvincia[]> {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { ImageService } from "../services/ImageService";
 import { FieldValues, UseFormSetValue } from "react-hook-form";

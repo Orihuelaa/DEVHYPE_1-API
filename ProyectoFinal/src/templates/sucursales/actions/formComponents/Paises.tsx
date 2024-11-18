@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { PaisService } from "../../../../services/PaisService";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/store";
-import { setPaises } from "../../../../redux/slices/paisSlice";
+import { setPaisActivo, setPaises } from "../../../../redux/slices/paisSlice";
 import { IPais } from "../../../../endpoints/types/IPais";
 import { useForm } from "../../../../hooks/useForm";
 
 const Paises = () => {
 
-  const {paises, paisActivo} = useAppSelector((state) => state.paises);
+  const {paises} = useAppSelector((state) => state.paises);
   const dispatch = useAppDispatch();
   
   useEffect(() => {
@@ -26,17 +26,15 @@ const Paises = () => {
           }
         }
       };
-    
-      if (paisActivo) {
-        fetchPaises();
-      }
+  
+      fetchPaises();
   
       return ()=>{
         localStorage.removeItem(`paises`);
         dispatch(setPaises([]));
       }
     
-    }, [dispatch, paisActivo]);
+    }, [dispatch]);
     
     const { values, handleChanges } = useForm({
       id: 0,
@@ -45,14 +43,14 @@ const Paises = () => {
 
     return (
       <>
-      <label htmlFor="pais">País:</label>
+        <label htmlFor="pais">País:</label>
         <select id="pais" name="nombre" value={values.nombre} onChange={handleChanges} required >
-            <option value="" selected disabled></option>
-            {paises.map((pais) => (
-                <option key={pais.id} value={pais.nombre}>
-                    {pais.nombre}
-                </option>
-            ))}
+          <option value="" disabled>-Seleccione un país-</option>
+          {paises.map((pais) => (
+            <option key={pais.id} value={pais.nombre} onClick={()=> dispatch(setPaisActivo(pais))}>
+              {pais.nombre}
+            </option>
+          ))}
         </select> 
       </>
     )

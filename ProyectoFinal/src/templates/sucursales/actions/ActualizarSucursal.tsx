@@ -115,7 +115,7 @@ const ActualizarSucursal = () => {
       <div className={styles.overlay}>
         <div className={styles.overlay_content}>
           <h2>Actualizar Sucursal</h2>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={onSubmit} encType="multipart/form-data">
             <label htmlFor="nombre">Nombre de la Sucursal:</label>
             <input
               type="text"
