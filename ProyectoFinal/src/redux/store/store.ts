@@ -5,6 +5,8 @@ import categoriaReducer from "../slices/categoriaSlice"
 import paisReducer from "../slices/paisSlice"
 import provinciaReducer from "../slices/provinciaSlice"
 import localidadReducer from "../slices/localidadSlice"
+import alergenoReducer from "../slices/alergenoSlice"
+import articuloReducer from "../slices/articuloSlice"
 
 
 export const store = configureStore({
@@ -14,7 +16,9 @@ export const store = configureStore({
     categorias: categoriaReducer,
     paises: paisReducer,
     provincias: provinciaReducer,
-    localidades: localidadReducer
+    localidades: localidadReducer,
+    alergenos: alergenoReducer,
+    articulos: articuloReducer
   },
 });
 
