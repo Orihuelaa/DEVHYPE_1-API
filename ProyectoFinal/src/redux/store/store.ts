@@ -8,7 +8,6 @@ import localidadReducer from "../slices/localidadSlice"
 import alergenoReducer from "../slices/alergenoSlice"
 import articuloReducer from "../slices/articuloSlice"
 
-
 export const store = configureStore({
   reducer: {
     empresa: empresaReducer,

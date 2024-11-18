@@ -99,7 +99,7 @@ const CrearSucursal = () => {
             <div className={styles.overlay}>
                 <div className={styles.overlay_content}>
                     {/* Formulario para agregar una nueva sucursal */}
-                    <form onSubmit={onSubmit}>
+                    <form onSubmit={onSubmit} encType="multipart/form-data">
                         <h3>Agregar nueva Sucursal</h3>
                         <label htmlFor="nombre">Nombre de la Sucursal:</label>
                         <input
@@ -212,11 +212,11 @@ const CrearSucursal = () => {
                             required
                         />
 
-                        <label htmlFor="icono">Ícono de la Sucursal:</label>
+                        <label htmlFor="logo">Ícono de la Sucursal:</label>
                         <input 
                             type="file"
-                            id="icono"
-                            name="icono"
+                            id="logo"
+                            name="logo"
                             onChange={handleImageChange}
                             accept="image/*"
                         />

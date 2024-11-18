@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IAlergenos } from "../../endpoints/types/dtos/alergenos/IAlergenos";
 
-
-
 interface AlergenoState {
     alergenos: IAlergenos[];
     alergenoActivo: IAlergenos | null;

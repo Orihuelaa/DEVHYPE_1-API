@@ -53,7 +53,7 @@ const Sucursales = () => {
       <button onClick={() => navigate("/crear-sucursal")}>Crear Sucursal</button>
       <ul className={styles.container_g}>
         {sucursales.map((sucursal) => (
-          <li key={sucursal.id} onClick={() => handleSetSucursalActiva(sucursal)}>
+          <li  key={sucursal.id || `cuit-${sucursal.empresa.cuit}`} onClick={() => handleSetSucursalActiva(sucursal)}>
             <h3>{sucursal.nombre}</h3>
             <p>Apertura: {sucursal.horarioApertura}hs - {sucursal.horarioCierre}hs</p>
             <img src={sucursal.logo} alt="Logo" /> {/* <-- Revisar funcionalidad del logo */}

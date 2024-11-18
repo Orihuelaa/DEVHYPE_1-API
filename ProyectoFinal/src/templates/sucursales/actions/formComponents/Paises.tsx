@@ -36,7 +36,7 @@ const Paises = () => {
     
     }, [dispatch]);
     
-    const { handleChanges } = useForm({
+    const { values, handleChanges } = useForm({
       id: 0,
       nombre: '',
     })
@@ -44,13 +44,13 @@ const Paises = () => {
     return (
       <>
         <label htmlFor="pais">País:</label>
-        <select id="pais" name="nombre" onChange={handleChanges} required >
-            <option value="" selected disabled></option>
-            {paises.map((pais) => (
-                <option key={pais.id} value={pais.nombre} onClick={()=> dispatch(setPaisActivo(pais))}>
-                  {pais.nombre}
-                </option>
-            ))}
+        <select id="pais" name="nombre" value={values.nombre} onChange={handleChanges} required >
+          <option value="" disabled>-Seleccione un país-</option>
+          {paises.map((pais) => (
+            <option key={pais.id} value={pais.nombre} onClick={()=> dispatch(setPaisActivo(pais))}>
+              {pais.nombre}
+            </option>
+          ))}
         </select> 
       </>
     )

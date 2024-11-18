@@ -1,17 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IProductos } from "../../endpoints/types/dtos/productos/IProductos";
 
-interface ArticulosState {
+
+interface ArticuloState {
     articulos: IProductos[];
     articuloActivo: IProductos | null;
 }
 
-const initialState: ArticulosState = {
+const initialState: ArticuloState = {
     articulos: [],
     articuloActivo: null,
 };
 
-export const articulosSlice = createSlice({
+
+export const articuloSlice = createSlice({
     name: "articulos",
     initialState,
     reducers: {
@@ -24,5 +26,6 @@ export const articulosSlice = createSlice({
     },
 });
 
-export const { setArticulos, setArticuloActivo } = articulosSlice.actions;
-export default articulosSlice.reducer;
+
+export const { setArticulos, setArticuloActivo } = articuloSlice.actions;
+export default articuloSlice.reducer;

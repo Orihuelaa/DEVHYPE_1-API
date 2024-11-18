@@ -40,7 +40,7 @@ const Provincias = () => {
       
       }, [dispatch, paisActivo]);
 
-      const { handleChanges } = useForm({
+      const { values, handleChanges } = useForm({
         id: 0,
         nombre: '',
       })
@@ -48,8 +48,8 @@ const Provincias = () => {
       return (
         <>
           <label htmlFor="provincia">Provincia:</label>
-          <select id="provincia" name="nombre" onChange={handleChanges} required >
-            <option value="" selected disabled></option>
+          <select id="provincia" name="nombre" value={values.nombre} onChange={handleChanges} required >
+            <option value="" disabled>-Seleccione una provincia-</option>
             {provincias.map((provincia) => (
               <option key={provincia.id} value={provincia.nombre} onClick={() => dispatch(setProvinciaActiva(provincia))}>
                 {provincia.nombre}
