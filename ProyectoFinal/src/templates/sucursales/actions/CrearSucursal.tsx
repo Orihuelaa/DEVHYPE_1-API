@@ -15,38 +15,29 @@ const CrearSucursal = () => {
     
     const navigate = useNavigate();
     const {sucursales} = useAppSelector(state => state.sucursal);
+    const {empresaActiva} = useAppSelector(state => state.empresa);
+    const {localidadActiva} = useAppSelector(state => state.localidades);
     const dispatch = useAppDispatch();
     const sucursalService = new SucursalService("sucursales");
 
     // Configura el hook personalizado useForm
     const { values, handleChanges, resetForm } = useForm({
         nombre: '',
-        idEmpresa: 0,
-        eliminado: '',
-        latitud: 0,
-        longitud: 0,
-        logo: '',
-        categorias: 0,
-        esCasaMatriz: '',
         horarioApertura: '',
         horarioCierre: '',
+        esCasaMatriz: '',
+        latitud: 0,
+        longitud: 0,
 
-        domicilioId: 0,
         domicilioCalle: '',
         domicilioNumero: 0,
         domicilioCp: 0,
         domicilioPiso: 0,
-        domicilioEliminado: '',
         domicilioNroDpto: 0,
+        localidadId: localidadActiva?.id ?? 0,
 
-        localidadId: 0,
-        localidadNombre: '',
-        
-        provinciaId: 0,
-        provinciaNombre: '',
-        
-        paisId: 0,
-        paisNombre: ''
+        idEmpresa: empresaActiva?.id ?? 0,
+        logo: ''
     });
 
     const [logo, setLogo] = useState<string | null>(null);
@@ -54,13 +45,12 @@ const CrearSucursal = () => {
     const crteateSucursalObj = () => {
         const sucursalObj: ICreateSucursal = {
             nombre: values.nombre,
-            idEmpresa: values.idEmpresa,
-            latitud: values.latitud,
-            longitud: values.longitud,
-            logo: logo,
-            esCasaMatriz: values.esCasaMatriz === "Si" ? true : false,
             horarioApertura: values.horarioApertura,
             horarioCierre: values.horarioCierre,
+            esCasaMatriz: values.esCasaMatriz === "Si" ? true : false,
+            latitud: values.latitud,
+            longitud: values.longitud,
+            
             domicilio: {
                 calle: values.domicilioCalle,
                 numero: values.domicilioNumero,
@@ -68,10 +58,12 @@ const CrearSucursal = () => {
                 piso: values.domicilioPiso,
                 nroDpto: values.domicilioNroDpto,
                 idLocalidad: values.localidadId,
-            }
+            },
+            idEmpresa: values.idEmpresa,
+            logo: logo,
         };
         return sucursalObj;
-    };
+    }
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -134,7 +126,6 @@ const CrearSucursal = () => {
                             required
                         />
 
-                        {/* ESTOS TIENEN ERROR */}
                         <label htmlFor="es-casa-matriz">Es casa Matriz?</label>
                         <select name="esCasaMatriz" id="es-casa-matriz" value={values.esCasaMatriz} onChange={handleChanges} required >
                             <option value="" disabled></option>
@@ -145,7 +136,6 @@ const CrearSucursal = () => {
                         <Paises />
                         <Provincias />
                         <Localidades />
-                        {/* ----------------------------- */}
 
                         <label htmlFor="latitud">Latitud:</label>
                         <input 

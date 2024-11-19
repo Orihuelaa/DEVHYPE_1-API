@@ -8,79 +8,62 @@ import { IUpdateSucursal } from "../../../endpoints/types/dtos/sucursal/IUpdateS
 import { CategoriaService } from "../../../services/CategoriaService";
 import { useState } from "react";
 import { UploadImage } from "../../image/UploadImage";
+import Paises from "./formComponents/Paises";
+import Provincias from "./formComponents/Provincias";
+import Localidades from "./formComponents/Localidades";
 
 const ActualizarSucursal = () => {
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
+  const {empresaActiva} = useAppSelector((state) => state.empresa);
   const {sucursales, sucursalActiva} = useAppSelector((state) => state.sucursal);
   const sucursalService = new SucursalService('sucursales');
 
   // Configura el hook personalizado useForm
   const { values, handleChanges, resetForm } = useForm({
     id: sucursalActiva?.id ?? 0,
-    nombre: sucursalActiva?.nombre ?? '',
-    idEmpresa: sucursalActiva?.empresa.id ?? 0,
-    eliminado: sucursalActiva?.eliminado ? "Si" : "No",
+    nombre: sucursalActiva?.nombre ?? "",
+    idEmpresa: empresaActiva?.id ?? 0,
+    eliminado: sucursalActiva?.eliminado === true ? "Si" : "No",
     latitud: sucursalActiva?.latitud ?? 0,
     longitud: sucursalActiva?.longitud ?? 0,
-    logo: sucursalActiva?.logo ?? '',
-    categorias: sucursalActiva?.categorias.length ?? 0,
-    esCasaMatriz: sucursalActiva?.esCasaMatriz ? "Si" : "No",
-    horarioApertura: sucursalActiva?.horarioApertura ?? '',
-    horarioCierre: sucursalActiva?.horarioCierre ?? '',
-
-    domicilioId: sucursalActiva?.domicilio.id ?? 0,
-    domicilioCalle: sucursalActiva?.domicilio.calle ?? '',
-    domicilioNumero: sucursalActiva?.domicilio.numero ?? 0,
-    domicilioCp: sucursalActiva?.domicilio.cp ?? 0,
-    domicilioPiso: sucursalActiva?.domicilio.piso ?? 0,
-    domicilioEliminado: sucursalActiva?.domicilio.eliminado ? "Si" : "No",
-    domicilioNroDpto: sucursalActiva?.domicilio.nroDpto ?? 0,
-
-    localidadId: sucursalActiva?.domicilio.localidad.id ?? 0,
-    localidadNombre: sucursalActiva?.domicilio.localidad.nombre ?? '',
-      
-    provinciaId: sucursalActiva?.domicilio.localidad.provincia.id ?? 0,
-    provinciaNombre: sucursalActiva?.domicilio.localidad.provincia.nombre ?? '',
     
-    paisId: sucursalActiva?.domicilio.localidad.provincia.pais.id ?? 0,
-    paisNombre: sucursalActiva?.domicilio.localidad.provincia.pais.nombre ?? ''
+    domicilioId: sucursalActiva?.domicilio?.id ?? 0,
+    domicilioCalle: sucursalActiva?.domicilio?.calle ?? "",
+    domicilioNumero: sucursalActiva?.domicilio?.numero ?? 0,
+    domicilioCp: sucursalActiva?.domicilio?.cp ?? 0,
+    domicilioPiso: sucursalActiva?.domicilio?.piso ?? 0,
+    domicilioNroDpto: sucursalActiva?.domicilio?.nroDpto ?? 0,
+    domicilioIdLocalidad: sucursalActiva?.domicilio?.localidad?.id ?? 0,
+    
+    logo: "",
+    categorias: '',
+    esCasaMatriz: sucursalActiva?.esCasaMatriz === true ? "Si" : "No",
+    horarioApertura: sucursalActiva?.horarioApertura ?? '',
+    horarioCierre: sucursalActiva?.horarioCierre ?? ''
   });
 
   const [logo, setLogo] = useState<string | null>(null);
 
   const updateSucursalObj = async() => {
+    
     const categoriaService = new CategoriaService('categorias');
-
     const getAllCategories = async () => {
       const categorias = await categoriaService.getAllCategoriaBySucursalId(sucursalActiva!.id);
       return categorias ?? [];
     };
   
     const categories = await getAllCategories();
-
-    const formatTime = (timeString: string): string => {
-      const [hours, minutes] = timeString.split(":");
-      // Asegurarse de que siempre tenga dos dígitos
-      return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-    };
-    
-    const horarioApertura = formatTime(values.horarioApertura); 
-    const horarioCierre = formatTime(values.horarioCierre);
   
-    const obj: IUpdateSucursal = {
+    const sucursalObj: IUpdateSucursal = {
       id: values.id,
       nombre: values.nombre,
       idEmpresa: values.idEmpresa,
       eliminado: values.eliminado === "Si" ? true : false,
       latitud: values.latitud,
       longitud: values.longitud,
-      logo: values.logo,
-      categorias: categories, // Asigna las categorias obtenidas
-      esCasaMatriz: values.esCasaMatriz === "Si" ? true : false,
-      horarioApertura: horarioApertura,
-      horarioCierre: horarioCierre,
+      
       domicilio: {
         id: values.domicilioId,
         calle: values.domicilioCalle,
@@ -88,11 +71,16 @@ const ActualizarSucursal = () => {
         cp: values.domicilioCp,
         piso: values.domicilioPiso,
         nroDpto: values.domicilioNroDpto,
-        idLocalidad: values.localidadId,
-      }
+        idLocalidad: values.domicilioIdLocalidad,
+      },
+      logo: logo ?? "",
+      categorias: categories,
+      esCasaMatriz: values.esCasaMatriz === "Si" ? true : false,
+      horarioApertura: values.horarioApertura,
+      horarioCierre: values.horarioCierre
     }
   
-    return obj;
+    return sucursalObj;
   };
   
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -125,8 +113,9 @@ const ActualizarSucursal = () => {
     <>
       <div className={styles.overlay}>
         <div className={styles.overlay_content}>
-          <h2>Actualizar Sucursal</h2>
+          {/* Formulario para agregar una nueva sucursal */}
           <form onSubmit={onSubmit} encType="multipart/form-data">
+            <h3>Agregar nueva Sucursal</h3>
             <label htmlFor="nombre">Nombre de la Sucursal:</label>
             <input
               type="text"
@@ -137,55 +126,36 @@ const ActualizarSucursal = () => {
               required
             />
 
-            <label htmlFor="horario-apertura">Ingrese la hora de apertura:</label>
+            <label htmlFor="hora-apertura">Ingrese la hora de apertura:</label>
             <input 
               type="time"
-              id="horario-apertura"
+              id="hora-apertura"
               name="horarioApertura"
               value={values.horarioApertura}
               onChange={handleChanges}
               required
             />
 
-            <label htmlFor="horario-cierre">Ingrese la hora de cierre:</label>
+            <label htmlFor="hora-cierre">Ingrese la hora de cierre:</label>
             <input 
               type="time"
-              id="horario-cierre"
+              id="hora-cierre"
               name="horarioCierre"
               value={values.horarioCierre}
               onChange={handleChanges}
               required
             />
 
-            <label htmlFor="pais">País:</label>
-            <input 
-              type="text" 
-              id="pais"
-              name="pais"
-              value={values.paisNombre}
-              onChange={handleChanges}
-              required
-            /> 
+            <label htmlFor="es-casa-matriz">Es casa Matriz?</label>
+            <select name="esCasaMatriz" id="es-casa-matriz" value={values.esCasaMatriz} onChange={handleChanges} required >
+              <option value="" disabled></option>
+              <option value="Si">Si</option>
+              <option value="No">No</option>
+            </select>
 
-            <label htmlFor="provincia">Provincia:</label>
-            <input 
-              type="text" 
-              id="provincia"
-              name="provincia"
-              value={values.provinciaNombre}
-              onChange={handleChanges}
-              required
-            />
-
-            <label htmlFor="localidad">Localidad:</label>
-            <input 
-              type="text" 
-              id="localidad"
-              name="localidad"
-              value={values.localidadNombre}
-              onChange={handleChanges}
-              required
-            />
+            <Paises />
+            <Provincias />
+            <Localidades />
 
             <label htmlFor="latitud">Latitud:</label>
             <input 
@@ -206,12 +176,12 @@ const ActualizarSucursal = () => {
               onChange={handleChanges}
               required
             />
-              
+        
             <label htmlFor="nombreCalle">Nombre de la calle:</label>
             <input 
               type="text" 
               id="nombreCalle"
-              name="nombreCalle"
+              name="domicilioCalle"
               value={values.domicilioCalle}
               onChange={handleChanges}
               required
@@ -221,17 +191,17 @@ const ActualizarSucursal = () => {
             <input 
               type="number" 
               id="numeroCalle"
-              name="numeroCalle"
+              name="domicilioNumero"
               value={values.domicilioNumero}
               onChange={handleChanges}
               required
             />
 
-            <label htmlFor="cp">Código postal:</label>
+            <label htmlFor="codigoPostal">Código postal:</label>
             <input 
               type="number" 
-              id="cp"
-              name="cp"
+              id="codigoPostal"
+              name="domicilioCp"
               value={values.domicilioCp}
               onChange={handleChanges}
               required
@@ -239,9 +209,9 @@ const ActualizarSucursal = () => {
 
             <label htmlFor="numeroPiso">Número de piso:</label>
             <input 
-              type="number" 
+              type="number"
               id="numeroPiso"
-              name="numeroPiso"
+              name="domicilioPiso" 
               value={values.domicilioPiso}
               onChange={handleChanges}
               required
@@ -249,9 +219,9 @@ const ActualizarSucursal = () => {
 
             <label htmlFor="numeroDepartamento">Número de departamento:</label>
             <input 
-              type="number"
-              id="numeroDepartamento" 
-              name="numeroDepartamento"
+              type="number" 
+              id="numeroDepartamento"
+              name="domicilioNroDpto"
               value={values.domicilioNroDpto}
               onChange={handleChanges}
               required
@@ -271,7 +241,6 @@ const ActualizarSucursal = () => {
           </form>
         </div>
       </div>
-      
     </>
   );
 };
