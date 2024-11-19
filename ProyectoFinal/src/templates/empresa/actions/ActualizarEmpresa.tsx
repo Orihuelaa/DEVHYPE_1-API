@@ -1,18 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import styles from "../../../styles/templates/styles.module.css";
 import { EmpresaService } from "../../../services/EmpresaService";
-import useImage from "../../../hooks/useImage";
-import { ImageService } from "../../../services/ImageService";
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
 import { setEmpresas } from "../../../redux/slices/empresaSlice";
 import { useForm } from "../../../hooks/useForm";
+import { IUpdateEmpresaDto } from "../../../endpoints/types/dtos/empresa/IUpdateEmpresaDto";
+import { useState } from "react";
+import { UploadImage } from "../../image/UploadImage";
 
 const ActualizarEmpresa = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const {empresas, empresaActiva} = useAppSelector((state) => state.empresa);
   const empresaService = new EmpresaService('empresas');
-  const imageService = new ImageService("images");
 
   // Configura el hook personalizado useForm
   const { values, handleChanges, resetForm } = useForm({
@@ -23,18 +23,23 @@ const ActualizarEmpresa = () => {
     logo: empresaActiva?.logo ?? ""
   });  
 
-  // Hook personalizado para manejar imágenes
-  const { preview, handleImageChange } = useImage({ imageService, setValue: resetForm });
+  const [logo, setLogo] = useState<string | null>(null);
 
   // Maneja el envío del formulario
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const empresaData: IUpdateEmpresaDto = {
+      ...values,
+      logo: logo || "",
+    };
     try {
-      const updatedEmpresa = await empresaService.updateEmpresa(values.id, values);
+      const updatedEmpresa = await empresaService.updateEmpresa(values.id, empresaData);
       if (updatedEmpresa) {
         // Aqui deberiamos implementar SweetAlert
         dispatch(setEmpresas([...empresas, updatedEmpresa]));
         resetForm();
+        setLogo(null);
       } else {
         console.log("Error al actualizar la empresa");
       }
@@ -84,14 +89,11 @@ const ActualizarEmpresa = () => {
           />
 
           <label htmlFor="logo">Ícono de la Empresa:</label>
-          <input type="file" id="logo" name="logo" onChange={handleImageChange} accept="image/*" required/>
-
-          {preview && (
-            <div className="preview">
-              <p>Vista previa del ícono:</p>
-              <img src={preview} alt="Vista previa del ícono" />
-            </div>
-          )}
+          <UploadImage
+            image={logo}  // URL de la imagen cargada
+            setImage={setLogo}  // Función para actualizar la imagen
+            typeElement="empresa"  // Tipo de elemento (si es necesario para la eliminación)
+          />
 
           <div>
             <button type="submit" className="confirmar">Confirmar</button>

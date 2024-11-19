@@ -2,12 +2,12 @@ import { useNavigate } from "react-router-dom";
 import styles from "../../../styles/templates/styles.module.css"
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
 import { SucursalService } from "../../../services/SucursalService";
-import { ImageService } from "../../../services/ImageService";
 import { useForm } from "../../../hooks/useForm";
-import useImage from "../../../hooks/useImage";
 import { setSucursales } from "../../../redux/slices/sucursalSlice";
 import { IUpdateSucursal } from "../../../endpoints/types/dtos/sucursal/IUpdateSucursal";
 import { CategoriaService } from "../../../services/CategoriaService";
+import { useState } from "react";
+import { UploadImage } from "../../image/UploadImage";
 
 const ActualizarSucursal = () => {
   const navigate = useNavigate();
@@ -16,8 +16,6 @@ const ActualizarSucursal = () => {
   const {sucursales, sucursalActiva} = useAppSelector((state) => state.sucursal);
   const sucursalService = new SucursalService('sucursales');
 
-  const imageService = new ImageService("images");
-  
   // Configura el hook personalizado useForm
   const { values, handleChanges, resetForm } = useForm({
     id: sucursalActiva?.id ?? 0,
@@ -50,11 +48,10 @@ const ActualizarSucursal = () => {
     paisNombre: sucursalActiva?.domicilio.localidad.provincia.pais.nombre ?? ''
   });
 
-  // Hook personalizado para manejar imágenes
-  const { preview, handleImageChange } = useImage({ imageService, setValue: resetForm });
+  const [logo, setLogo] = useState<string | null>(null);
 
   const updateSucursalObj = async() => {
-    const categoriaService = new CategoriaService('/categorias');
+    const categoriaService = new CategoriaService('categorias');
 
     const getAllCategories = async () => {
       const categorias = await categoriaService.getAllCategoriaBySucursalId(sucursalActiva!.id);
@@ -62,6 +59,15 @@ const ActualizarSucursal = () => {
     };
   
     const categories = await getAllCategories();
+
+    const formatTime = (timeString: string): string => {
+      const [hours, minutes] = timeString.split(":");
+      // Asegurarse de que siempre tenga dos dígitos
+      return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+    };
+    
+    const horarioApertura = formatTime(values.horarioApertura); 
+    const horarioCierre = formatTime(values.horarioCierre);
   
     const obj: IUpdateSucursal = {
       id: values.id,
@@ -73,8 +79,8 @@ const ActualizarSucursal = () => {
       logo: values.logo,
       categorias: categories, // Asigna las categorias obtenidas
       esCasaMatriz: values.esCasaMatriz === "Si" ? true : false,
-      horarioApertura: values.horarioApertura,
-      horarioCierre: values.horarioCierre,
+      horarioApertura: horarioApertura,
+      horarioCierre: horarioCierre,
       domicilio: {
         id: values.domicilioId,
         calle: values.domicilioCalle,
@@ -89,16 +95,21 @@ const ActualizarSucursal = () => {
     return obj;
   };
   
-  // Maneja el envío del formulario
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const sucursalObj = await updateSucursalObj();
+    const sucursalData: IUpdateSucursal = {
+      ...sucursalObj,
+      logo: logo || "",
+    };
     try {
-      const updatedSucursalObj = await updateSucursalObj();
-      const updatedSucursal = await sucursalService.updateSucursal(values.id, updatedSucursalObj);
+      const updatedSucursal = await sucursalService.updateSucursal(values.id, sucursalData);
       if (updatedSucursal) {
         const updatedSucursales = sucursales.map((s) => (s.id === values.id ? updatedSucursal : s));
         dispatch(setSucursales(updatedSucursales));
         resetForm();
+        setLogo(null);
       } else {
         console.log("Error al actualizar la sucursal");
       }
@@ -246,21 +257,13 @@ const ActualizarSucursal = () => {
               required
             />
 
-            <label htmlFor="icono">Ícono de la Sucursal:</label>
-            <input 
-              type="file"
-              id="icono"
-              name="icono"
-              onChange={handleImageChange}
-              accept="image/*"
-              required
+            <label htmlFor="logo">Ícono de la Sucursal:</label>
+            <UploadImage
+              image={logo}
+              setImage={setLogo}
+              typeElement="empresa"
             />
 
-            {preview && (
-                <div className="preview">
-                    <img src={preview} alt="Vista previa del ícono" />
-                </div>
-            )}
             <div>
               <button type="submit" className="confirmar">Confirmar</button>
               <button onClick={() => navigate('/')} className="cancelar">Cancelar</button>
