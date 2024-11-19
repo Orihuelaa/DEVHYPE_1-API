@@ -21,7 +21,7 @@ const Categorias = () => {
       if (categoriasFromStorage) {
         dispatch(setCategorias(JSON.parse(categoriasFromStorage)));
       } else {
-        const categoriaService = new CategoriaService('/categorias');
+        const categoriaService = new CategoriaService('categorias');
         try {
           const response = await categoriaService.getAllCategoriaBySucursalId(sucursalActiva!.id);
           const categorias_all = response?.filter((categoria) => (categoria as ICategorias).id !== undefined);
