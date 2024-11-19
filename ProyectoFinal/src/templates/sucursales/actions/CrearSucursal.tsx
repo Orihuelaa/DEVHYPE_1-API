@@ -1,7 +1,5 @@
 import { useNavigate} from "react-router-dom";
-import styles from "../../../styles/templates/styles.module.css"
-import useImage from "../../../hooks/useImage";
-import { ImageService } from "../../../services/ImageService";
+import styles from "../../../styles/templates/styles.module.css";
 import { useForm } from "../../../hooks/useForm";
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
 import { SucursalService } from "../../../services/SucursalService";
@@ -10,6 +8,8 @@ import { setSucursales } from "../../../redux/slices/sucursalSlice";
 import Paises from "./formComponents/Paises";
 import Provincias from "./formComponents/Provincias";
 import Localidades from "./formComponents/Localidades";
+import { useState } from "react";
+import { UploadImage } from "../../image/UploadImage";
 
 const CrearSucursal = () => {
     
@@ -17,8 +17,6 @@ const CrearSucursal = () => {
     const {sucursales} = useAppSelector(state => state.sucursal);
     const dispatch = useAppDispatch();
     const sucursalService = new SucursalService("sucursales");
-    const imageService = new ImageService("images");
-
 
     // Configura el hook personalizado useForm
     const { values, handleChanges, resetForm } = useForm({
@@ -51,25 +49,24 @@ const CrearSucursal = () => {
         paisNombre: ''
     });
 
-    // Hook personalizado para manejar imágenes
-    const { preview, handleImageChange } = useImage({ imageService, setValue: resetForm });
+    const [logo, setLogo] = useState<string | null>(null);
 
     const crteateSucursalObj = () => {
         const sucursalObj: ICreateSucursal = {
             nombre: values.nombre,
-            idEmpresa: Number(values.idEmpresa), // Asegúrate de convertirlo a un número
-            latitud: Number(values.latitud),
-            longitud: Number(values.longitud),
-            logo: values.logo,
+            idEmpresa: values.idEmpresa,
+            latitud: values.latitud,
+            longitud: values.longitud,
+            logo: logo,
             esCasaMatriz: values.esCasaMatriz === "Si" ? true : false,
             horarioApertura: values.horarioApertura,
             horarioCierre: values.horarioCierre,
             domicilio: {
                 calle: values.domicilioCalle,
-                numero: Number(values.domicilioNumero),
-                cp: Number(values.domicilioCp),
-                piso: Number(values.domicilioPiso),
-                nroDpto: Number(values.domicilioNroDpto),
+                numero: values.domicilioNumero,
+                cp: values.domicilioCp,
+                piso: values.domicilioPiso,
+                nroDpto: values.domicilioNroDpto,
                 idLocalidad: values.localidadId,
             }
         };
@@ -78,12 +75,18 @@ const CrearSucursal = () => {
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        
+        const sucursalObj = crteateSucursalObj();
+        const sucursalData: ICreateSucursal = {
+            ...sucursalObj,
+            logo: logo || "",
+        };
         try {
-            const sucursalObj = crteateSucursalObj();
-            const nuevaSucursal = await sucursalService.createSucursal(sucursalObj);
+            const nuevaSucursal = await sucursalService.createSucursal(sucursalData);
             if (nuevaSucursal !== null) {
                 dispatch(setSucursales([...sucursales, nuevaSucursal]));
                 resetForm();
+                setLogo(null);
             } else {
                 console.log("Error al crear la empresa");
             }
@@ -131,6 +134,7 @@ const CrearSucursal = () => {
                             required
                         />
 
+                        {/* ESTOS TIENEN ERROR */}
                         <label htmlFor="es-casa-matriz">Es casa Matriz?</label>
                         <select name="esCasaMatriz" id="es-casa-matriz" value={values.esCasaMatriz} onChange={handleChanges} required >
                             <option value="" disabled></option>
@@ -141,6 +145,7 @@ const CrearSucursal = () => {
                         <Paises />
                         <Provincias />
                         <Localidades />
+                        {/* ----------------------------- */}
 
                         <label htmlFor="latitud">Latitud:</label>
                         <input 
@@ -213,19 +218,11 @@ const CrearSucursal = () => {
                         />
 
                         <label htmlFor="logo">Ícono de la Sucursal:</label>
-                        <input 
-                            type="file"
-                            id="logo"
-                            name="logo"
-                            onChange={handleImageChange}
-                            accept="image/*"
+                        <UploadImage
+                            image={logo}
+                            setImage={setLogo}
+                            typeElement="empresa"
                         />
-
-                        {preview && (
-                            <div>
-                                <img src={preview} alt="Vista previa del ícono" />
-                            </div>
-                        )}
 
                         <div>
                             <button type="submit" className="confirmar">Confirmar</button>

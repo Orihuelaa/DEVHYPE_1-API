@@ -1,9 +1,10 @@
 import { FC } from "react";
-import { Button } from "@mui/material";
 import Swal from "sweetalert2";
-import noImage from "../assets/images/noImage.jpeg";
-import { IImagen } from "../types/IImagen";
-import { ImageService } from "../services/ImageService";
+import noImage from "../image/assets/images/noImage.jpg";
+import { IImagen } from "../../endpoints/types/IImagen";
+import { ImageService } from "../../services/ImageService";
+import { Button } from "@mui/material";
+
 
 // Definimos la interfaz de las propiedades que recibirá el componente UploadImage
 interface IUploadImage {

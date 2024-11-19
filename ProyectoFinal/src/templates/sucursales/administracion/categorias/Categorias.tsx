@@ -66,7 +66,7 @@ const Categorias = () => {
       </div>
       <ul>
         {categorias.map((categoria) => (
-            <li key={categoria.id} onClick={() => handleSetCategoriaActiva(categoria)}>
+            <li key={categoria.id}>
               <span>{categoria.denominacion}</span>
               <button onClick={(e)=> {e.stopPropagation(); handleToggleSubCategorias(categoria); handleSetCategoriaActiva(categoria)}}> {mostrarSubCategoria?.id === categoria.id ? 'Ocultar' : 'Mostrar'} Subcategorias</button>
               <button onClick={(e) => {e.stopPropagation(); handleSetCategoriaActiva(categoria, `/admin/editar-categoria`);}}>Actualizar Categoría</button>
