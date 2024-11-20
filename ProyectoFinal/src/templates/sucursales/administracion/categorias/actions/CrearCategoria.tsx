@@ -10,14 +10,14 @@ export default function CrearCategoria() {
   const navigate = useNavigate();
   const {empresaActiva} = useAppSelector((state) => state.empresa);
   const {sucursalActiva} = useAppSelector((state) => state.sucursal);
-  const { categorias, categoriaActiva } = useAppSelector((state) => state.categorias);
+  const { categorias } = useAppSelector((state) => state.categorias);
   const dispatch = useAppDispatch();
   const categoriaService = new CategoriaService('categorias');
 
   const { values, handleChanges, resetForm } = useForm({
     denominacion: "",
     idEmpresa:  empresaActiva?.id ?? 0,
-    idCategoriaPadre: categoriaActiva?.categoriaPadre?.id ?? 0
+    idCategoriaPadre: 0
   });
 
   const createCategoriaObj = () => {
@@ -26,6 +26,7 @@ export default function CrearCategoria() {
       idEmpresa: values.idEmpresa,
       idCategoriaPadre: null
     };
+
     return categoriaObj;
   }
 
@@ -57,9 +58,9 @@ export default function CrearCategoria() {
         <h2>Crear una categoria padre</h2>
 
         <label htmlFor="denominacion">Denominacion</label>
-        <input type="text" name="denominacion" id="denominacion" value={values.denominacion} onChange={handleChanges}/>
+        <input type="text" name="denominacion" id="denominacion" value={values.denominacion} onChange={handleChanges} required/>
         
-        <button onClick={()=> navigate(`/admin)`)} type="button">Cancelar</button>
+        <button onClick={()=> navigate(`/admin`)} type="button">Cancelar</button>
         <button type="submit">Confirmar</button>
       </form>
     </>

@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from "../../../../../hooks/store";
 import { useForm } from "../../../../../hooks/useForm";
 import { setCategorias } from "../../../../../redux/slices/categoriaSlice";
 import { IUpdateCategoria } from "../../../../../endpoints/types/dtos/categorias/IUpdateCategoria";
-import { SucursalService } from "../../../../../services/SucursalService";
 
 export default function ActualizarCategoria() {
 
@@ -12,7 +11,6 @@ export default function ActualizarCategoria() {
   const { categorias, categoriaActiva } = useAppSelector((state) => state.categorias);
   const { empresaActiva } = useAppSelector((state) => state.empresa);
   const dispatch = useAppDispatch();
-  const sucursalService = new SucursalService('sucursales');
   const categoriaService = new CategoriaService('categorias');
 
   const { values, handleChanges, resetForm } = useForm({
@@ -21,41 +19,18 @@ export default function ActualizarCategoria() {
     eliminado: categoriaActiva?.eliminado ? "Si" : "No",
     idEmpresa: empresaActiva?.id ?? 0,
     idSucursales: 0,
-    idCategoriaPadre: categoriaActiva?.categoriaPadre?.id ?? 0
+    idCategoriaPadre: 0
   });
 
   const updateCategoriaObj = async() => {
-    let sucursalesIdEnCategoria: number[] = [];
-    try {
-      const sucursalesPorEmpresa = await sucursalService.getAllSucursalesPorEmpresaId(empresaActiva!.id);
-      const categoriasPorEmpresa = await categoriaService.getAllCategoriaByEmpresaId(empresaActiva!.id);
-      console.log(sucursalesPorEmpresa);
-      console.log(categoriasPorEmpresa);
-      
-      if (
-        sucursalesPorEmpresa.every((sucursal) => sucursal.empresa.id === values.idEmpresa) &&
-        categoriasPorEmpresa?.every((categoria) =>
-          categoria.sucursales.some((sucursalCategoria) =>
-            sucursalCategoria.empresa && sucursalCategoria.empresa.id === values.idEmpresa
-          )
-        )
-      ) {
-        sucursalesIdEnCategoria = sucursalesPorEmpresa.map((sucursal) => sucursal.id);
-        console.log(sucursalesIdEnCategoria);
-        
-      }
-
-    } catch (error) {
-      console.log(error);
-    } 
-
+    
     const obj: IUpdateCategoria = {
       id: values.id,
       denominacion: values.denominacion,
       eliminado: values.eliminado === "Si" ? true : false,
       idEmpresa: values.idEmpresa,
-      idSucursales: sucursalesIdEnCategoria,
-      idCategoriaPadre: values.idCategoriaPadre === 0 ? null : values.idCategoriaPadre
+      idSucursales: categoriaActiva?.sucursales.map((sucursal) => sucursal.id) ?? [],
+      idCategoriaPadre: null
     }
 
     return obj;
