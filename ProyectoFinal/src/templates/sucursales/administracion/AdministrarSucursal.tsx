@@ -5,7 +5,9 @@ import Productos from "./productos/Productos";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../hooks/store";
 //import styles from "../../../styles/templates/styles.module.css"
-
+import Button from '@mui/material/Button';
+import { Stack } from "@mui/system";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function AdministrarSucursal() {
     const navigate = useNavigate();
@@ -38,20 +40,20 @@ export default function AdministrarSucursal() {
         <div>
             <aside>
                 <h2>Administracion</h2>
-                <div>
-                    <ul>
-                        <li><button onClick={() => (setActive('Categorias'))} type="button">Categorias</button></li>
-                        <li><button onClick={() => (setActive('Productos'))} type="button">Productos</button></li>
-                        <li> <button onClick={() => (setActive('Alergenos'))} type="button">Alergenos</button></li>
-                    </ul>
-                </div>
+
+                <Stack direction="row" spacing={2}>
+                    <Button variant="contained" sx={{width:100}} onClick={() => (setActive('Categorias'))} type="button">Categorias</Button>
+                    <Button variant="contained" sx={{width:100}} onClick={() => (setActive('Productos'))} type="button">Productos</Button>
+                    <Button variant="contained" sx={{width:100}} onClick={() => (setActive('Alergenos'))} type="button">Alergenos</Button>
+                </Stack>
+                
             </aside>
             <main>
                 {handleRenderComponent(active)}
             </main>
         </div>
         <footer>
-            <button onClick={() => navigate(`/`)} type="button">Volver</button>
+        <Button className="boton-volver" variant="contained" startIcon={<ArrowBackIcon/>} onClick={() => navigate('/')}>Volver</Button>
         </footer>
       </>
     );

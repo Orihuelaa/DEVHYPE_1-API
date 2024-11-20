@@ -10,6 +10,8 @@ import Provincias from "./formComponents/Provincias";
 import Localidades from "./formComponents/Localidades";
 import { useState } from "react";
 import { UploadImage } from "../../image/UploadImage";
+import Button from '@mui/material/Button';
+import { Stack } from "@mui/system";
 
 const CrearSucursal = () => {
     
@@ -214,10 +216,10 @@ const CrearSucursal = () => {
                             typeElement="empresa"
                         />
 
-                        <div>
-                            <button type="submit" className="confirmar">Confirmar</button>
-                            <button onClick={() => navigate('/')} className="cancelar">Cancelar</button>
-                        </div>
+                    <Stack direction="row" spacing={2}>
+                        <Button type="submit" className="confirmar" variant="contained" color="success" >Confirmar</Button>
+                        <Button sx={{ alignItems: 'end' }} onClick={() => navigate('/')} className="cancelar" variant="contained" color="error">Cancelar</Button>
+                    </Stack >
                     </form>
                 </div>
             </div>

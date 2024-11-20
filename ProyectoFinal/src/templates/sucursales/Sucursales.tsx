@@ -5,6 +5,15 @@ import { useEffect } from "react";
 import { SucursalService } from "../../services/SucursalService";
 import { ISucursal } from "../../endpoints/types/dtos/sucursal/ISucursal";
 import { setSucursalActiva, setSucursales } from "../../redux/slices/sucursalSlice";
+/* importaciones material UI */
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import Button from '@mui/material/Button';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { common } from '@mui/material/colors';
 
 const Sucursales = () => {
   const dispatch = useAppDispatch();
@@ -51,7 +60,11 @@ const Sucursales = () => {
     <main>
       <div className="encabezado_sucursales">
         <h2>Sucursales en: {empresaActiva?.nombre}</h2>
-        <button onClick={() => navigate("/crear-sucursal")}>Crear Sucursal</button>
+        <Button variant="contained" startIcon={<AddCircleIcon />} 
+      sx={{ color: common.black, 
+            backgroundColor: '#f0f0f0', 
+            height: 40,
+            '&:hover': {backgroundColor: '#DBD8D8',color: '#000' }, }} onClick={() => navigate("/crear-sucursal")}>Crear Sucursal</Button>
       </div>
       <ul className={styles.container_g}>
         {sucursales.map((sucursal) => (
@@ -61,11 +74,41 @@ const Sucursales = () => {
             <div className="imagen_sucursales">
               <img src={sucursal.logo} /> {/* <-- Revisar funcionalidad del logo */}
             </div>
-            <div>
-              <button onClick={(e) => {e.stopPropagation(); handleSetSucursalActiva(sucursal, `/admin`)}}>Admin</button>
-              <button onClick={(e) => {e.stopPropagation(); handleSetSucursalActiva(sucursal, `/editar-sucursal`)}}>Editar</button>
-              <button onClick={(e) => {e.stopPropagation(); handleSetSucursalActiva(sucursal, `/ver-sucursal`)}}>Ver</button>
-            </div>
+            <Stack direction="row" spacing={3} sx={{ alignItems: 'center' }}>
+              <Button variant="outlined"
+                sx={{ 
+                  width:40,
+                  height: 40,
+                  minWidth: 'unset',
+                  color:'#000000',
+                  '&:hover': {backgroundColor: '#DBD8D8', }, }}
+                  aria-label="view" size="medium" 
+                onClick={(e) => {e.stopPropagation(); handleSetSucursalActiva(sucursal, `/admin`)}}>
+                 <AssignmentIcon fontSize="medium"></AssignmentIcon>
+              </Button>
+              <Button variant="outlined"
+                sx={{ 
+                  width:40,
+                  height: 40,
+                  minWidth: 'unset',
+                  color:'#000000',
+                  '&:hover': {backgroundColor: '#DBD8D8', }, }}
+                  aria-label="view" size="medium" 
+                  onClick={(e) => {e.stopPropagation(); handleSetSucursalActiva(sucursal, `/editar-sucursal`)}}>
+                <EditIcon fontSize="medium"></EditIcon>
+              </Button>
+              <Button variant="outlined"
+                sx={{ 
+                  width:40,
+                  height: 40,
+                  minWidth: 'unset',
+                  color:'#000000',
+                  '&:hover': {backgroundColor: '#DBD8D8', }, }}
+                  aria-label="view" size="medium" 
+                  onClick={(e) => {e.stopPropagation(); handleSetSucursalActiva(sucursal, `/ver-sucursal`)}}>
+                  <VisibilityIcon fontSize="medium"></VisibilityIcon>
+              </Button>
+            </Stack>
           </li>
         ))}
       </ul>

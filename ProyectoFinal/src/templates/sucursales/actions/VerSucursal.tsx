@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import styles from "../../../styles/templates/styles.module.css"
 import { useAppSelector } from "../../../hooks/store";
+import Button from '@mui/material/Button';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const VerSucursal = () => {
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ const VerSucursal = () => {
           <p>Horario Apertura: {sucursalActiva?.horarioApertura}hs</p>
           <p>Horario Cierre: {sucursalActiva?.horarioCierre}hs</p>
           <p>Logo: {sucursalActiva.logo ? "Tiene" : "No Tiene"}</p>
-          <button onClick={() => navigate("/")}>Volver</button>
+          <Button className="boton-volver" variant="contained" startIcon={<ArrowBackIcon/>} onClick={() => navigate('/')}>Volver</Button>
         </div>
       </div>
       )}

@@ -127,10 +127,6 @@
     justify-content: space-around;
 }
 
-.container_f > li > div > button, .container_g > li > div > button {
-    padding: .4rem .8rem;
-}
-
 @media (max-width: 900px) {
     .appContainer aside, .appContainer main{
         align-items: center;
