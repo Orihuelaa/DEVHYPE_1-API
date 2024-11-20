@@ -23,7 +23,7 @@ const Categorias = () => {
       } else {
         const categoriaService = new CategoriaService('categorias');
         try {
-          const response = await categoriaService.getAllCategoriaBySucursalId(sucursalActiva!.id);
+          const response = await categoriaService.getAllCategoriaPadreBySucursalId(sucursalActiva!.id);
           const categorias_all = response?.filter((categoria) => (categoria as ICategorias).id !== undefined);
           
           dispatch(setCategorias(categorias_all as ICategorias[]));
