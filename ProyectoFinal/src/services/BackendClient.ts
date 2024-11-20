@@ -29,7 +29,7 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
       title: "Enviando datos...",
       allowOutsideClick: false,
       didOpen: () => {
-        Swal.showLoading(Swal.getDenyButton());
+        Swal.showLoading();
       },
     });
     try {
@@ -55,7 +55,7 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
       title: "Editando datos...",
       allowOutsideClick: false,
       didOpen: () => {
-        Swal.showLoading(Swal.getDenyButton());
+        Swal.showLoading();
       },
     });
     try {
@@ -82,7 +82,7 @@ export abstract class BackendClient<T> extends AbstractBackendClient<T> {
       title: "Eliminando...",
       allowOutsideClick: false,
       didOpen: () => {
-        Swal.showLoading(Swal.getDenyButton());
+        Swal.showLoading();
       },
     });
     try {

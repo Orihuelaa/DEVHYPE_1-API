@@ -16,8 +16,8 @@ export class ArticuloService extends BackendClient<IProductos | ICreateProducto 
            title: "Creando Producto... ",
            allowOutsideClick: false,
            didOpen: () => {
-               Swal.showLoading(Swal.getDenyButton());
-           },
+               Swal.showLoading();
+            },
        })
        try {
          const response = await fetch(`${this.baseUrl}/create`, {
@@ -39,7 +39,7 @@ export class ArticuloService extends BackendClient<IProductos | ICreateProducto 
             title: "Editando Producto... ",
             allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading(Swal.getDenyButton());
+                Swal.showLoading();
             },
         })
         try {
@@ -57,12 +57,13 @@ export class ArticuloService extends BackendClient<IProductos | ICreateProducto 
         }
     }
 
+    // Revisar
     async deleteArticuloById(id: number){
         Swal.fire({
             title: "Eliminando Producto... ",
             allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading(Swal.getDenyButton());
+                Swal.showLoading();
             },
         })
         try {
@@ -81,7 +82,7 @@ export class ArticuloService extends BackendClient<IProductos | ICreateProducto 
             title: "Obteniendo Productos... ",
             allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading(Swal.getDenyButton());
+                Swal.showLoading();
             },
         })
         try {
@@ -101,7 +102,7 @@ export class ArticuloService extends BackendClient<IProductos | ICreateProducto 
             title: "Obteniendo Productos... ",
             allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading(Swal.getDenyButton());
+                Swal.showLoading();
             },
         })
         try {
@@ -121,7 +122,7 @@ export class ArticuloService extends BackendClient<IProductos | ICreateProducto 
             title: "Obteniendo Producto... ",
             allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading(Swal.getDenyButton());
+                Swal.showLoading();
             },
         })
         try {
@@ -129,6 +130,26 @@ export class ArticuloService extends BackendClient<IProductos | ICreateProducto 
             if (!response.ok) {
                 throw new Error('Error');
             }
+            const data = await response.json();
+            return data as IProductos;
+        } finally {
+            Swal.close();
+        }
+    }
+
+    // Revisar
+    async deleteArticuloImg(id: number, publicId: number): Promise<IProductos | null> {
+        Swal.fire({
+            title: "Eliminando Imagen... ",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        })
+        try {
+            const response = await fetch(`${this.baseUrl}/${id}/${publicId}`, {
+                method: "DELETE",
+            });
             const data = await response.json();
             return data as IProductos;
         } finally {

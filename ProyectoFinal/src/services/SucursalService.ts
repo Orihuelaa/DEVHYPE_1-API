@@ -75,4 +75,21 @@ export class SucursalService extends BackendClient<ISucursal | ICreateSucursal |
             Swal.close();
         }
     }
+
+    async existeCasaMatriz(id: number): Promise<ISucursal | null> {
+        Swal.fire({
+            title: "Editando sucursal...",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading(Swal.getDenyButton());
+            },
+        });
+        try {
+            const response = await fetch(`${this.baseUrl}/existCasaMatriz/${id}`);
+            const data = await response.json();
+            return data as ISucursal;
+        } finally {
+            Swal.close();
+        }
+    }
 }

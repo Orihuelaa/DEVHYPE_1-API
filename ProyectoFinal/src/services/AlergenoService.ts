@@ -16,7 +16,7 @@ export class AlergenoService extends BackendClient<IAlergenos | ICreateAlergeno 
             title: "Creando alergeno... ",
             allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading(Swal.getDenyButton());
+                Swal.showLoading();
             },
         });
         try {
@@ -39,7 +39,7 @@ export class AlergenoService extends BackendClient<IAlergenos | ICreateAlergeno 
             title: "Editando alergeno... ",
             allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading(Swal.getDenyButton());
+                Swal.showLoading();
             },
         });
         try {
@@ -57,12 +57,13 @@ export class AlergenoService extends BackendClient<IAlergenos | ICreateAlergeno 
         }
     }
 
+    // Revisar
     async deleteAlergeno(id: number): Promise<void> {
         Swal.fire({
             title: "Eliminando alergeno... ",
             allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading(Swal.getDenyButton());
+                Swal.showLoading();
             },
         });
         try {
@@ -77,5 +78,24 @@ export class AlergenoService extends BackendClient<IAlergenos | ICreateAlergeno 
         }
     }
 
+    // Revisar
+    async deleteAlergenoImg(id: number, publicId: number): Promise<IAlergenos | null> {
+        Swal.fire({
+            title: "Eliminando Imagen... ",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        })
+        try {
+            const response = await fetch(`${this.baseUrl}/${id}/${publicId}`, {
+                method: "DELETE",
+            });
+            const data = await response.json();
+            return data as IAlergenos;
+        } finally {
+            Swal.close();
+        }
+    }
     
 }
