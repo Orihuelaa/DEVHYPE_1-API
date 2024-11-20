@@ -46,26 +46,37 @@ const Empresas = () => {
     dispatch(setEmpresaActiva(empresa));
     if (route) navigate(route);
   };
-
   return (
-    <aside>
-        <h2>Empresas</h2>
-        <button style={{padding: "auto"}} onClick={() => navigate("/crear-empresa")}>Crear Empresa</button>
-          <ul className={styles.container_f}>
-            {empresas.map((empresa: IEmpresa) => (
-              <li key={empresa.id} onClick={() => handleSetEmpresaActiva(empresa)}>
-                <h3>{empresa.nombre}</h3>
-                <div> {/* e.stopPropagation(): // Evita que el clic en este botón active el evento de propagacion del contenedor <li> */}
-                  <button onClick={(e) => {e.stopPropagation(); handleSetEmpresaActiva(empresa, `ver-empresa`);}}> Ver </button>
-                  <button onClick={(e) => {e.stopPropagation(); handleSetEmpresaActiva(empresa, `editar-empresa`)}}>Editar</button>
-                </div>
-              </li>
-            ))}
-          </ul>
-
-      {empresaActiva && <Sucursales />}
-    </aside>
+    <div className={styles.layoutContainer}>
+      <aside className={styles.empresas}>
+        <div className="encabezado_empresa">
+            <h2>Empresas</h2>
+            <button onClick={() => navigate("/crear-empresa")}>
+              Crear Empresa
+            </button>
+        </div>
+        <ul className={styles.container_f}>
+          {empresas.map((empresa: IEmpresa) => (
+            <li className="boton_empresa" key={empresa.id} onClick={() => handleSetEmpresaActiva(empresa)}>
+              <h3>{empresa.nombre}</h3>
+              <div>
+                <button onClick={(e) => { e.stopPropagation(); handleSetEmpresaActiva(empresa, `ver-empresa`); }}>
+                  Ver
+                </button>
+                <button onClick={(e) => { e.stopPropagation(); handleSetEmpresaActiva(empresa, `editar-empresa`) }}>
+                  Editar
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </aside>
+      <section className={styles.sucursales}>
+        {empresaActiva && <Sucursales />}
+      </section>
+    </div>
   );
+  
 };
 
 export default Empresas
