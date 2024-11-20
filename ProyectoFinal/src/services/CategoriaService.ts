@@ -16,7 +16,7 @@ export class CategoriaService extends BackendClient<ICategorias | ICreateCategor
             title: "Creando categoria...",
             allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading(Swal.getDenyButton());
+                Swal.showLoading();
             },
         })
        try {
@@ -38,21 +38,63 @@ export class CategoriaService extends BackendClient<ICategorias | ICreateCategor
     }
 
     async getAllCategoriesByCategoriaPadre(id: number, idSucursal: number): Promise<ICategorias[]> {
-        const response = await fetch(`${this.baseUrl}/allSubCategoriasPorCategoriaPadre/${id}/${idSucursal}`);
-        if(!response.ok) {
-            throw new Error('Error')
+        Swal.fire({
+            title: "Obteniendo categorias...",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        })
+        try {
+            const response = await fetch(`${this.baseUrl}/allSubCategoriasPorCategoriaPadre/${id}/${idSucursal}`);
+            if(!response.ok) {
+                throw new Error('Error')
+            }
+            const data = await response.json();
+            return data as ICategorias[];
+        } finally {
+            Swal.close();
         }
-        const data = await response.json();
-        return data as ICategorias[];
     }
 
     async getAllSubCategoriasPorSucursal(id: number): Promise<ICategorias[]> {
-        const response = await fetch(`${this.baseUrl}/allSubCategoriasPorSucursal/${id}`);
-        if(!response.ok) {
-            throw new Error('Error')
+        Swal.fire({
+            title: "Obteniendo subcategorias...",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        })
+        try {
+            const response = await fetch(`${this.baseUrl}/allSubCategoriasPorSucursal/${id}`);
+            if(!response.ok) {
+                throw new Error('Error')
+            }
+            const data = await response.json();
+            return data as ICategorias[];
+        } finally {
+            Swal.close();
         }
-        const data = await response.json();
-        return data as ICategorias[];
+    }
+
+    async getAllSubCategoriasPorCategoriaPadre(idPadre: number, idSucursal: number): Promise<ICategorias[]> {
+        Swal.fire({
+            title: "Obteniendo categorias...",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        })
+        try {
+            const response = await fetch(`${this.baseUrl}/allSubCategoriasPorCategoriaPadre/${idPadre}/${idSucursal}`);
+            if(!response.ok) {
+                throw new Error('Error')
+            }
+            const data = await response.json();
+            return data as ICategorias[];
+        } finally {
+            Swal.close();
+        }
     }
 
     async bajaPorSucursal(idCategoria: number, idSucursal: number): Promise<void> {
@@ -60,7 +102,7 @@ export class CategoriaService extends BackendClient<ICategorias | ICreateCategor
             title: 'Dando de baja categoria...',
             allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading(Swal.getDenyButton())
+                Swal.showLoading()
             },
         })
         try {
@@ -80,7 +122,7 @@ export class CategoriaService extends BackendClient<ICategorias | ICreateCategor
             title: "Editando categoria...",
             allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading(Swal.getDenyButton());
+                Swal.showLoading();
             },
         })
         const response = await fetch(`${this.baseUrl}/update/${id}`, {
@@ -99,7 +141,7 @@ export class CategoriaService extends BackendClient<ICategorias | ICreateCategor
             title: "Editando sub-categoria...",
             allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading(Swal.getDenyButton());
+                Swal.showLoading();
             },
         })
         const response = await fetch(`${this.baseUrl}/allSubCategoriasPorCategoriaPadre/${idPadre}/${idSucursal}`, {
@@ -113,16 +155,58 @@ export class CategoriaService extends BackendClient<ICategorias | ICreateCategor
         return data as ICategorias;
     }
 
+    async getAllCategoriaPadreBySucursalId(idSucursal: number): Promise<ICategorias[] | null> {
+        Swal.fire({
+            title: "Obteniendo categorias...",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        })
+        try {
+            const response = await fetch(`${this.baseUrl}/allCategoriasPadrePorSucursal/${idSucursal}`);
+            if(!response.ok) {
+                throw new Error('Error')
+            }
+            const data = await response.json();
+            return data as ICategorias[];
+        } finally {
+            Swal.close();
+        }
+    }
+
     async getAllCategoriaBySucursalId(idSucursal: number): Promise<ICategorias[] | null> {
         Swal.fire({
             title: "Obteniendo categorias...",
             allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading(Swal.getDenyButton());
+                Swal.showLoading();
             }
-        })
+        });
+
         try {
-            const response = await fetch(`${this.baseUrl}/allCategoriasPadrePorSucursal/${idSucursal}`);
+            const response = await fetch(`${this.baseUrl}/allCategoriasPorSucursal/${idSucursal}`);
+            if(!response.ok) {
+                throw new Error('Error')
+            }
+            const data = await response.json();
+            return data as ICategorias[];
+        } finally {
+            Swal.close();
+        }
+    }
+
+    async getAllCategoriaByEmpresaId(idEmpresa: number): Promise<ICategorias[] | null> {
+        Swal.fire({
+            title: "Obteniendo categorias...",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        try {
+            const response = await fetch(`${this.baseUrl}/allCategoriasPorEmpresa/${idEmpresa}`);
             if(!response.ok) {
                 throw new Error('Error')
             }

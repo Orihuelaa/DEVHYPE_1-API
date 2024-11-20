@@ -45,7 +45,7 @@ const SubCategorias = () => {
 
     return (
         <ul>
-            {categoriaActiva?.subCategorias.map((subCategoria) => (
+            {categoriaActiva?.subCategorias && categoriaActiva?.subCategorias.map((subCategoria) => (
             <li key={subCategoria.id}>
                 <span>{subCategoria.denominacion}</span>
                 <button onClick={() => navigate(`/admin/editar-subcategoria`)}>Editar Subcategoría</button>
