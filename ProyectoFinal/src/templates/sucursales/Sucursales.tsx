@@ -49,14 +49,18 @@ const Sucursales = () => {
 
   return (
     <main>
-      <h2>Sucursales en: {empresaActiva?.nombre}</h2>
-      <button onClick={() => navigate("/crear-sucursal")}>Crear Sucursal</button>
+      <div className="encabezado_sucursales">
+        <h2>Sucursales en: {empresaActiva?.nombre}</h2>
+        <button onClick={() => navigate("/crear-sucursal")}>Crear Sucursal</button>
+      </div>
       <ul className={styles.container_g}>
         {sucursales.map((sucursal) => (
           <li  key={sucursal.id} onClick={() => handleSetSucursalActiva(sucursal)}>
             <h3>{sucursal.nombre}</h3>
             <p>Apertura: {sucursal.horarioApertura}hs - {sucursal.horarioCierre}hs</p>
-            <img src={sucursal.logo} alt="Logo" /> {/* <-- Revisar funcionalidad del logo */}
+            <div className="imagen_sucursales">
+              <img src={sucursal.logo} /> {/* <-- Revisar funcionalidad del logo */}
+            </div>
             <div>
               <button onClick={(e) => {e.stopPropagation(); handleSetSucursalActiva(sucursal, `/admin`)}}>Admin</button>
               <button onClick={(e) => {e.stopPropagation(); handleSetSucursalActiva(sucursal, `/editar-sucursal`)}}>Editar</button>
