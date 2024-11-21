@@ -13,6 +13,7 @@ interface IUploadImage {
   imageObjeto?: IImagen | null; // Objeto de tipo IImagen que representa la imagen cargada
   setImageObjeto?: (image: IImagen | null) => void; // Función para actualizar el objeto de imagen
   typeElement?: string; // Tipo de elemento que se utilizará al eliminar la imagen
+  buttonStyle?: object; 
 }
 
 // Componente funcional que permite subir y eliminar imágenes

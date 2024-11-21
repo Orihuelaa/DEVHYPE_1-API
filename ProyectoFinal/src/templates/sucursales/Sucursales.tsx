@@ -7,7 +7,6 @@ import { ISucursal } from "../../endpoints/types/dtos/sucursal/ISucursal";
 import { setSucursalActiva, setSucursales } from "../../redux/slices/sucursalSlice";
 /* importaciones material UI */
 import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -70,7 +69,8 @@ const Sucursales = () => {
         {sucursales.map((sucursal) => (
           <li  key={sucursal.id} onClick={() => handleSetSucursalActiva(sucursal)}>
             <h3>{sucursal.nombre}</h3>
-            <p>Apertura: {sucursal.horarioApertura}hs - {sucursal.horarioCierre}hs</p>
+            <p>Apertura: {`${String(sucursal.horarioApertura.split(':')[0]).padStart(2, '0')}:${String(sucursal.horarioApertura.split(':')[1]).padStart(2, '0')}`} hs - 
+            {`${String(sucursal.horarioCierre.split(':')[0]).padStart(2, '0')}:${String(sucursal.horarioCierre.split(':')[1]).padStart(2, '0')}`} hs</p>
             <div className="imagen_sucursales">
               <img src={sucursal.logo} /> {/* <-- Revisar funcionalidad del logo */}
             </div>

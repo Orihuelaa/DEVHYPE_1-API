@@ -71,8 +71,6 @@ form {
   form input,
   form select,
   form input[type="file"] {
-    grid-column: 2;
-    width: 75%;
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 4px;
