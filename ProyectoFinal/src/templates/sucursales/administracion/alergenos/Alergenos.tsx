@@ -12,6 +12,23 @@ const Alergenos = () => {
     const { alergenos } = useAppSelector((state) => state.alergenos);
     const dispatch = useAppDispatch();
 
+    // Función para eliminar alérgeno
+  const handleDeleteAlergeno = async (id: number) => {
+    const alergenoService = new AlergenoService("alergenos");
+
+    try {
+      await alergenoService.deleteAlergeno(id); 
+      const updatedAlergenos = alergenos.filter((alergeno) => alergeno.id !== id);
+      dispatch(setAlergenos(updatedAlergenos)); 
+
+      localStorage.setItem(`alergenos-${sucursalActiva?.id}`, JSON.stringify(updatedAlergenos));
+      
+    } catch (error) {
+      console.error("Error al eliminar el alérgeno:", error);
+    }
+  };
+
+
     useEffect(() => {
         const fetchAlergenos = async () => {
             const alergenosFromStorage = localStorage.getItem(`alergenos-${sucursalActiva?.id}`); 
@@ -53,7 +70,7 @@ const Alergenos = () => {
                         <span>{alergeno.denominacion}</span>
                         <button onClick={(e)=> {e.stopPropagation(); handleSetAlergenoActivo(alergeno, `/admin/ver-alergeno`);}}> Ver</button>
                         <button onClick={(e) => {e.stopPropagation(); handleSetAlergenoActivo(alergeno, `/admin/editar-alergeno`);}}>Actualizar</button>
-                        {/* <button onClick={() => {}>Eliminar</button> */}
+                        <button onClick={(e) => {e.stopPropagation(); handleDeleteAlergeno(alergeno.id);}}>Eliminar</button>
                     </li>
                 ))}
             </ul>
