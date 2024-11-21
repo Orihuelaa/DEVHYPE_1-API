@@ -1,29 +1,64 @@
-// import { useNavigate } from "react-router-dom";
-// import { IAlergenos } from "../../../../endpoints/types/dtos/alergenos/IAlergenos";
-
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/store";
+import { AlergenoService } from "../../../../services/AlergenoService";
+import { setAlergenos, setAlergenoActivo } from "../../../../redux/slices/alergenoSlice";
+import { IAlergenos } from "../../../../endpoints/types/dtos/alergenos/IAlergenos";
 
 const Alergenos = () => {
+    
+    const navigate = useNavigate();
+    const {sucursalActiva} = useAppSelector((state) => state.sucursal);
+    const { alergenos } = useAppSelector((state) => state.alergenos);
+    const dispatch = useAppDispatch();
 
-//   const navigate = useNavigate();
+    useEffect(() => {
+        const fetchAlergenos = async () => {
+            const alergenosFromStorage = localStorage.getItem(`alergenos-${sucursalActiva?.id}`); 
 
-  return (
-    <>
-{/* //       <div>
-//           <h2>Alergenos</h2>
-//           <button onClick={() => navigate(`/admin/crear-alergeno`)}>Crear Alergeno</button>
-//           <ul>
-//             {alergenos.map((alergeno: IAlergenos) => ( */}
-{/* //               <li key={alergeno.id}>
-//                 <span>{alergeno.denominacion}</span>
-//                 <img src={alergeno.imagen.url} alt={alergeno.denominacion} style={{ width: "50px", height: "50px", marginLeft: "10px" }} />
-//                 <button onClick={() => navigate(`/admin/ver-alergeno`)}>Ver Alergeno</button>
-//                 <button onClick={() => navigate(`/admin/editar-alergeno`)}>Actualizar Alergeno</button>
-//               </li>
-//             ))}
-//           </ul>
-//       </div> */}
-    </>
-  );
+            if (alergenosFromStorage) {
+              dispatch(setAlergenos(JSON.parse(alergenosFromStorage)));
+            }else{
+              const alergenoService = new AlergenoService('alergenos');
+              try {
+                  const response = await alergenoService.getAll();
+                  dispatch(setAlergenos(response as IAlergenos[]));
+                  localStorage.setItem(`alergenos-${sucursalActiva?.id}`, JSON.stringify(response));
+              } catch (error) {
+                  console.log(error);
+              }
+            }
+        };
+        if (sucursalActiva) {
+            fetchAlergenos();
+        }
+        return ()=>{
+          localStorage.removeItem(`alergenos-${sucursalActiva?.id}`);
+          dispatch(setAlergenos([]));
+        }
+
+    }, [dispatch, sucursalActiva]);
+
+    const handleSetAlergenoActivo = (alergeno: IAlergenos, route?: string) => {
+        dispatch(setAlergenoActivo(alergeno));
+        if (route) navigate(route);
+    };
+
+    return (
+        <div>
+            <button onClick={() => navigate(`/admin/crear-alergeno`) }>Crear Alergeno</button>
+            <ul>
+                {alergenos.map((alergeno) => (
+                    <li key={alergeno.id}>
+                        <span>{alergeno.denominacion}</span>
+                        <button onClick={(e)=> {e.stopPropagation(); handleSetAlergenoActivo(alergeno, `/admin/ver-alergeno`);}}> Ver</button>
+                        <button onClick={(e) => {e.stopPropagation(); handleSetAlergenoActivo(alergeno, `/admin/editar-alergeno`);}}>Actualizar</button>
+                        {/* <button onClick={() => {}>Eliminar</button> */}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 };
 
 export default Alergenos;
