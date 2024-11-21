@@ -19,11 +19,11 @@
 }
 .layoutContainer {
     display: grid;
-    grid-template-columns: 1.5fr 2fr; /* Aumenta el ancho relativo de la columna de empresas */
-    gap: 2rem; /* Espacio entre las columnas */
-    align-items: start; /* Alinea los contenidos al inicio */
-  }
-  
+    grid-template-columns: 1.5fr 2fr;
+    gap: 2rem;
+    align-items: start;
+}
+
   .empresas {
     border-right: 1px solid #ccc; /* Separador visual entre empresas y sucursales */
     padding-right: 5rem;
@@ -157,7 +157,7 @@
     background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente */
     padding: 20px;
     border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra para el efecto de elevación */
+    box-shadow: 0 0 10px #00000080; /* Sombra para el efecto de elevación */
 }
 
 /* Estilo de la superposición */

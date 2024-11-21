@@ -41,7 +41,7 @@ export default function AdministrarSucursal() {
             <aside>
                 <h2>Administracion</h2>
 
-                <Stack direction="row" spacing={2}>
+                <Stack direction="column" spacing={2}>
                     <Button variant="contained" sx={{width:100}} onClick={() => (setActive('Categorias'))} type="button">Categorias</Button>
                     <Button variant="contained" sx={{width:100}} onClick={() => (setActive('Productos'))} type="button">Productos</Button>
                     <Button variant="contained" sx={{width:100}} onClick={() => (setActive('Alergenos'))} type="button">Alergenos</Button>
