@@ -6,7 +6,10 @@ import { useForm } from "../../../hooks/useForm";
 import { UploadImage } from "../../image/UploadImage";
 import { useState } from "react";
 import { ICreateEmpresaDto } from "../../../endpoints/types/dtos/empresa/ICreateEmpresaDto";
-
+import styles from "../../../styles/templates/styles.module.css";
+/* Importaciones MUI */
+import Button from '@mui/material/Button';
+import { Stack } from "@mui/system";
 const CrearEmpresa = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -47,52 +50,55 @@ const CrearEmpresa = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <label htmlFor="nombre">Nombre de la Empresa:</label>
-        <input
-          type="text"
-          id="nombre"
-          name="nombre"
-          value={values.nombre}
-          onChange={handleChanges}
-          placeholder="Ingrese el nombre de la empresa"
-          required
-        />
+    <div className={styles.overlay}>
+      <div className={styles.overlay_content}>
+        <form onSubmit={onSubmit}>
+          <label htmlFor="nombre">Nombre de la Empresa:</label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            value={values.nombre}
+            onChange={handleChanges}
+            placeholder="Ingrese el nombre de la empresa"
+            required
+          />
 
-        <label htmlFor="razon-social">Razón Social:</label>
-        <input
-          type="text"
-          id="razonSocial"
-          name="razonSocial"
-          value={values.razonSocial}
-          onChange={handleChanges}
-          placeholder="Ingrese la razón social"
-          required
-        />
+          <label htmlFor="razon-social">Razón Social:</label>
+          <input
+            type="text"
+            id="razonSocial"
+            name="razonSocial"
+            value={values.razonSocial}
+            onChange={handleChanges}
+            placeholder="Ingrese la razón social"
+            required
+          />
 
-        <label htmlFor="cuit">CUIT:</label>
-        <input
-          type="number"
-          id="cuit"
-          name="cuit"
-          value={values.cuit}
-          onChange={handleChanges}
-          placeholder="Ingrese el CUIT"
-          required
-        />
+          <label htmlFor="cuit">CUIT:</label>
+          <input
+            type="number"
+            id="cuit"
+            name="cuit"
+            value={values.cuit}
+            onChange={handleChanges}
+            placeholder="Ingrese el CUIT"
+            required
+          />
 
-        {/* Componente UploadImage para cargar el logo */}
-        <label htmlFor="logo">Ícono de la Empresa:</label>
-        <UploadImage
-          image={logo}  // URL de la imagen cargada
-          setImage={setLogo}  // Función para actualizar la imagen
-          typeElement="empresa"  // Tipo de elemento (si es necesario para la eliminación)
-        />
-
-        <button type="submit">Confirmar</button>
-        <button type="button" onClick={() => navigate("/")}>Cancelar</button>
-      </form>
+          {/* Componente UploadImage para cargar el logo */}
+          <label htmlFor="logo">Ícono de la Empresa:</label>
+          <UploadImage
+            image={logo}  // URL de la imagen cargada
+            setImage={setLogo}  // Función para actualizar la imagen
+            typeElement="empresa"  // Tipo de elemento (si es necesario para la eliminación)
+          />
+        </form>
+        <Stack direction="row" spacing={2}  sx={{display: 'flex',justifyContent: 'space-between', marginTop:'15px'}}>
+                          <Button type="submit" className="confirmar" variant="contained" color="success" >Confirmar</Button>
+                          <Button sx={{ marginLeft: 'auto' }} onClick={() => navigate('/')} className="cancelar" variant="contained" color="error">Cancelar</Button>
+                      </Stack >
+      </div>
     </div>
   );
 };

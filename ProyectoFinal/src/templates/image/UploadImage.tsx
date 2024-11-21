@@ -5,7 +5,6 @@ import { IImagen } from "../../endpoints/types/IImagen";
 import { ImageService } from "../../services/ImageService";
 import { Button } from "@mui/material";
 
-
 // Definimos la interfaz de las propiedades que recibirá el componente UploadImage
 interface IUploadImage {
   image?: string | null; // URL de la imagen cargada, opcional
@@ -93,11 +92,11 @@ export const UploadImage: FC<IUploadImage> = ({
   return (
     <div
       style={{
-        width: "22vw",
+        width: "30vw",
         border: "1px solid #ccc",
         borderRadius: ".4rem",
         padding: ".4rem",
-        height: "100%",
+        height: "6vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -146,7 +145,9 @@ export const UploadImage: FC<IUploadImage> = ({
             onChange={handleFileChange} // Ejecuta la función de cambio de archivo
           />
           <label htmlFor="contained-button-file">
-            <Button variant="outlined" component="span">
+            <Button variant="outlined" component="span" sx={{
+                color: 'white',borderColor: 'white', 
+                '&:hover': { borderColor: 'white', backgroundColor: 'rgba(255, 255, 255, 0.1)',},}}>
               Elige una imagen
             </Button>
           </label>
@@ -154,7 +155,7 @@ export const UploadImage: FC<IUploadImage> = ({
             <img
               src={noImage} // Muestra una imagen de reemplazo si no hay imagen cargada
               alt="Uploaded"
-              style={{ maxWidth: "100px", height: "auto" }}
+              style={{ height: '6vh' }}
             />
           </div>
         </>
