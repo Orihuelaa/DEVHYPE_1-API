@@ -67,43 +67,46 @@ const Sucursales = () => {
       </div>
       <ul className={styles.container_g}>
         {sucursales.map((sucursal) => (
-          <li  key={sucursal.id} onClick={() => handleSetSucursalActiva(sucursal)}>
+          <li style={{justifyContent:'space-between',whiteSpace:'nowrap',overflow:'hidden', textOverflow: 'ellipsis',}} key={sucursal.id} onClick={() => handleSetSucursalActiva(sucursal)}>
             <h3>{sucursal.nombre}</h3>
             <p>Apertura: {`${String(sucursal.horarioApertura.split(':')[0]).padStart(2, '0')}:${String(sucursal.horarioApertura.split(':')[1]).padStart(2, '0')}`} hs - 
             {`${String(sucursal.horarioCierre.split(':')[0]).padStart(2, '0')}:${String(sucursal.horarioCierre.split(':')[1]).padStart(2, '0')}`} hs</p>
             <div className="imagen_sucursales">
               <img src={sucursal.logo} /> {/* <-- Revisar funcionalidad del logo */}
             </div>
-            <Stack direction="row" spacing={3} sx={{ alignItems: 'center' }}>
+            <Stack direction="row" spacing={2} sx={{ alignItems: 'center', }}>
               <Button variant="outlined"
                 sx={{ 
-                  width:40,
-                  height: 40,
+                  width:35,
+                  height: 35,
                   minWidth: 'unset',
                   color:'#000000',
-                  '&:hover': {backgroundColor: '#DBD8D8', }, }}
+                  borderColor: 'black',
+                  '&:hover': { backgroundColor: '#005f6a', borderColor: 'black', }, }}
                   aria-label="view" size="medium" 
                 onClick={(e) => {e.stopPropagation(); handleSetSucursalActiva(sucursal, `/admin`)}}>
                  <AssignmentIcon fontSize="medium"></AssignmentIcon>
               </Button>
               <Button variant="outlined"
                 sx={{ 
-                  width:40,
-                  height: 40,
+                  width:35,
+                  height: 35,
                   minWidth: 'unset',
                   color:'#000000',
-                  '&:hover': {backgroundColor: '#DBD8D8', }, }}
+                  borderColor: 'black',
+                  '&:hover': { backgroundColor: '#005f6a', borderColor: 'black', }, }}
                   aria-label="view" size="medium" 
                   onClick={(e) => {e.stopPropagation(); handleSetSucursalActiva(sucursal, `/editar-sucursal`)}}>
                 <EditIcon fontSize="medium"></EditIcon>
               </Button>
               <Button variant="outlined"
                 sx={{ 
-                  width:40,
-                  height: 40,
+                  width:35,
+                  height: 35,
                   minWidth: 'unset',
                   color:'#000000',
-                  '&:hover': {backgroundColor: '#DBD8D8', }, }}
+                  borderColor: 'black',
+                  '&:hover': { backgroundColor: '#005f6a', borderColor: 'black',}, }}
                   aria-label="view" size="medium" 
                   onClick={(e) => {e.stopPropagation(); handleSetSucursalActiva(sucursal, `/ver-sucursal`)}}>
                   <VisibilityIcon fontSize="medium"></VisibilityIcon>

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styles from "../../../styles/templates/styles.module.css"
 import { useAppSelector } from "../../../hooks/store";
+/* Importaciones MUI */
 import Button from '@mui/material/Button';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
@@ -29,7 +30,11 @@ const VerSucursal = () => {
     <>
       {sucursalActiva && (
       <div className={styles.overlay}>
-        <div className={styles.overlay_content}>
+        <div className={styles.overlay_content} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between",}}>
+        <Button variant="contained" startIcon={<ArrowBackIcon/>} sx={{ position: "absolute",top: "10px", right: "10px",
+          backgroundColor:'white',color:'black',
+        '&:hover': { backgroundColor: '#dadada', borderColor: 'black', }, }} 
+        onClick={() => navigate('/')}>Volver</Button>
           <h2>Sucursal</h2>
           <p>Nombre: {sucursalActiva?.nombre}</p> 
           <p>Empresa: {sucursalActiva?.empresa.nombre}</p>
@@ -38,7 +43,6 @@ const VerSucursal = () => {
           <p>Horario Apertura: {sucursalActiva?.horarioApertura}hs</p>
           <p>Horario Cierre: {sucursalActiva?.horarioCierre}hs</p>
           <p>Logo: {sucursalActiva.logo ? "Tiene" : "No Tiene"}</p>
-          <Button className="boton-volver" variant="contained" startIcon={<ArrowBackIcon/>} onClick={() => navigate('/')}>Volver</Button>
         </div>
       </div>
       )}

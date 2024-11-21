@@ -7,6 +7,9 @@ import { useForm } from "../../../hooks/useForm";
 import { IUpdateEmpresaDto } from "../../../endpoints/types/dtos/empresa/IUpdateEmpresaDto";
 import { useState } from "react";
 import { UploadImage } from "../../image/UploadImage";
+/* importaciones MUI */
+import Button from '@mui/material/Button';
+import { Stack } from "@mui/system";
 
 const ActualizarEmpresa = () => {
   const navigate = useNavigate();
@@ -94,12 +97,11 @@ const ActualizarEmpresa = () => {
             setImage={setLogo}  // Función para actualizar la imagen
             typeElement="empresa"  // Tipo de elemento (si es necesario para la eliminación)
           />
-
-          <div>
-            <button type="submit" className="confirmar">Confirmar</button>
-            <button type="button" onClick={() => navigate("/")} className="cancelar">Cancelar</button>
-          </div>
         </form>
+        <Stack direction="row" spacing={2}  sx={{display: 'flex',justifyContent: 'space-between', marginTop:'15px'}}>
+            <Button type="submit" className="confirmar" variant="contained" color="success" >Confirmar</Button>
+            <Button sx={{ marginLeft: 'auto' }} onClick={() => navigate('/')} className="cancelar" variant="contained" color="error">Cancelar</Button>
+          </Stack >
       </div>
     </div>
   );
