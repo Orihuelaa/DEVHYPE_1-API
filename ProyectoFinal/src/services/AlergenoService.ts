@@ -20,7 +20,7 @@ export class AlergenoService extends BackendClient<IAlergenos | ICreateAlergeno 
             },
         });
         try {
-            const response = await fetch(`${this.baseUrl}/create`, {
+            const response = await fetch(`${this.baseUrl}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
