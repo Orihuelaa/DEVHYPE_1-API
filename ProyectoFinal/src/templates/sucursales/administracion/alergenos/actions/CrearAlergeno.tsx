@@ -39,10 +39,7 @@ const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
   
   const alergenoObj = createAlergenoObj();
-  const alergenoData: ICreateAlergeno = {
-      ...alergenoObj,
-      imagen: imagen,
-  };
+  const alergenoData: ICreateAlergeno = {...alergenoObj};
   try {
       const nuevoAlergeno = await alergenoService.createAlergeno(alergenoData);
       if (nuevoAlergeno !== null) {
