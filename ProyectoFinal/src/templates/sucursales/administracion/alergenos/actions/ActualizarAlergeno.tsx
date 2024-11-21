@@ -1,89 +1,94 @@
-// import { useEffect } from "react";
-// import { useNavigate, useParams } from "react-router-dom";
-// import { useAppDispatch } from "../../../../../hooks/store";
-// import { AlergenoService } from "../../../../../services/AlergenoService";
-// import useImage from "../../../../../hooks/useImage";
-// import { IUpdateAlergeno } from "../../../../../endpoints/types/dtos/alergenos/IUpdateAlergeno";
-// import { ErrorPage } from "../../../../ErrorPage";
+import { useNavigate } from "react-router-dom";
+import { AlergenoService } from "../../../../../services/AlergenoService";
+import { useAppDispatch, useAppSelector } from "../../../../../hooks/store";
+import { IImagen } from "../../../../../endpoints/types/IImagen";
+import { IUpdateAlergeno } from "../../../../../endpoints/types/dtos/alergenos/IUpdateAlergeno";
+
+import { useState } from "react";
+import { setAlergenos } from "../../../../../redux/slices/alergenoSlice";
+import styles from "../../../../../styles/templates/styles.module.css"
+import { UploadImage } from "../../../../image/UploadImage";
+import { useForm } from "../../../../../hooks/useForm";
+
+
 
 
 const ActualizarAlergeno = () => {
-//   const navigate = useNavigate();
-//   const { id } = useParams();
-//   const dispatch = useAppDispatch();
-//   const alergenoService = new AlergenoService('/alergenos/{id}');
+  const navigate = useNavigate();
+  const {alergenos, alergenoActivo } = useAppSelector((state) => state.alergenos);
+  const dispatch = useAppDispatch();
+  const alergenoService = new AlergenoService('alergenos');
 
-//   const {
-//     register,
-//     handleSubmit,
-//     setValue,
-//     formState: { errors },
-//   } = useForm<IUpdateAlergeno>();
+  const {values, handleChanges, resetForm} = useForm({
+    id: alergenoActivo!.id,
+    denominacion: alergenoActivo?.denominacion ?? "",
 
-//   const { preview, handleImageChange } = useImage({ setValue });
+    imagenId: alergenoActivo?.imagen?.id ?? 0,
+    imagenName: alergenoActivo?.imagen?.name ?? "",
+    imagenUrl: alergenoActivo?.imagen?.url ?? "",
+    imagenEliminado: alergenoActivo?.imagen?.eliminado ? "Si" : "No",
 
-//   useEffect(() => {
-//     // Función para cargar los datos de la sucursal (suponiendo que tienes un servicio para obtener la sucursal)
-//     const fetchAlergeno = async () => {
-//       const response = await fetch(`/api/alergeno/${id}`);
-//       if (response.ok) {
-//         const data = await response.json();
-//         // Llenamos el estado del formulario con los datos de la sucursal
-//         setValue(data);
-//       } else {
-//         console.error("Error al cargar los datos de la sucursal");
-//       }
-//     };
+    
+  });
 
-//     if (id) {
-//       fetchSucursal();
-//     }
-//   }, [id]);
+  const [imagen, setImagen] = useState<IImagen | null>(null);
 
-//   // Maneja el envío del formulario
-//     const onSubmit = async (data: IUpdateAlergeno) => {
-//         try {
-//         const updatedAlergeno = await alergenoService.updateAlergeno(Number(id), data);
-//         if (updatedAlergeno) {
-//             // Actualiza el estado de empresas en Redux con la empresa modificada
-//             const updatedAlergenos = alergenos.map((e) => (e.id === Number(id) ? updatedAlergeno : e));
-//             dispatch(setAlergenos(updatedAlergenos));
-//             navigate('/');
-//         } else {
-//             ErrorPage("Error al actualizar la empresa");
-//         }
-//         } catch (error) {
-//         console.error("Error al actualizar la empresa", error);
-//         }
-//     };
+  const updateAlergenoObj = async() => {
 
+    const alergenoObj: IUpdateAlergeno = {
+      id: values.id,
+      denominacion: values.denominacion,
+      imagen: imagen,
+    }
+
+    return alergenoObj;
+  };
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      const updatedAlergenoObj = await updateAlergenoObj();
+      const updateAlergeno = await alergenoService.updateAlergeno(values.id, updatedAlergenoObj);
+
+      if (updateAlergeno) {
+        const updatedAlergenos = alergenos.map((a) => (a.id === values.id ? updateAlergeno : a));
+        dispatch(setAlergenos(updatedAlergenos));
+        resetForm();
+      } else {
+        console.log("Error al crear la alergeno");
+      }
+    }catch (error) {
+      console.log(error);
+    } finally {
+      navigate("/admin");
+    }
+  };
   return (
-    <div>
-{/* //       <h2>Actualizar Alérgeno</h2>
-//       <form onSubmit={handleSubmit(onSubmit)}>
-//         <label htmlFor="denominacion">Nombre del Alérgeno:</label>
-//         <input
-//           type="text"
-//           id="denominacion"
-//           {...register("denominacion", { required: "Este campo es obligatorio" })}
-//         />
-//         {errors.denominacion && <p>{errors.denominacion.message}</p>}
-
-//         <label htmlFor="imagen">Ícono del Alérgeno:</label>
-//         <input type="file" id="imagen" accept="image/*" onChange={handleImageChange} />
-
-//         {preview && (
-//           <div className="preview">
-//             <p>Vista previa del ícono:</p>
-//             <img src={preview} alt="Vista previa del ícono" style={{ width: "50px", height: "50px" }} />
-//           </div>
-//         )}
-
-//         <div>
-//           <button type="submit">Actualizar</button>
-//           <button type="button" onClick={() => navigate(`/alergenos`)}>Volver</button>
-//         </div>
-//       </form> */}
+    <div className={styles.container}>
+      <div className={styles.form}>
+        <form onSubmit={onSubmit}>
+          <h2>Actualizar Alergeno</h2>
+          <label htmlFor="denominacion">Denominacion:</label>
+          <input
+            type="text"
+            id="denominacion"
+            name="denominacion"
+            value={values.denominacion}
+            onChange={handleChanges}
+          />
+          <label htmlFor="imagen">Imagen:</label>
+          <UploadImage
+            imageObjeto={imagen}
+            setImageObjeto={setImagen}
+            typeElement="alergeno"
+          />
+          
+          <div>
+            <button type="submit" className="confirmar">Confirmar</button>
+            <button onClick={() => navigate('/admin')} className="cancelar">Cancelar</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

@@ -43,7 +43,7 @@ export class AlergenoService extends BackendClient<IAlergenos | ICreateAlergeno 
             },
         });
         try {
-            const response = await fetch(`${this.baseUrl}/update/${id}`, {
+            const response = await fetch(`${this.baseUrl}/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -67,7 +67,7 @@ export class AlergenoService extends BackendClient<IAlergenos | ICreateAlergeno 
             },
         });
         try {
-            const response = await fetch(`${this.baseUrl}/delete/${id}`, {
+            const response = await fetch(`${this.baseUrl}/${id}`, {
                 method: "DELETE",
             });
             if (!response.ok) {
