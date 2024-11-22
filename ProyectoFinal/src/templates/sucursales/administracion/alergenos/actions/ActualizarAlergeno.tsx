@@ -3,12 +3,14 @@ import { AlergenoService } from "../../../../../services/AlergenoService";
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/store";
 import { IImagen } from "../../../../../endpoints/types/IImagen";
 import { IUpdateAlergeno } from "../../../../../endpoints/types/dtos/alergenos/IUpdateAlergeno";
-
 import { useState } from "react";
 import { setAlergenos } from "../../../../../redux/slices/alergenoSlice";
 import styles from "../../../../../styles/templates/styles.module.css"
 import { UploadImage } from "../../../../image/UploadImage";
 import { useForm } from "../../../../../hooks/useForm";
+import Button from '@mui/material/Button';
+import { Stack } from "@mui/system";
+
 
 
 
@@ -64,8 +66,8 @@ const ActualizarAlergeno = () => {
     }
   };
   return (
-    <div className={styles.container}>
-      <div className={styles.form}>
+    <div className={styles.overlay}>
+      <div className={styles.overlay_content}>
         <form onSubmit={onSubmit}>
           <h2>Actualizar Alergeno</h2>
           <label htmlFor="denominacion">Denominacion:</label>
@@ -83,11 +85,11 @@ const ActualizarAlergeno = () => {
             typeElement="alergeno"
           />
           
-          <div>
-            <button type="submit" className="confirmar">Confirmar</button>
-            <button onClick={() => navigate('/admin')} className="cancelar">Cancelar</button>
-          </div>
         </form>
+        <Stack direction="row" spacing={2}  sx={{display: 'flex',justifyContent: 'space-between', marginTop:'15px'}}>
+                        <Button type="submit" className="confirmar" variant="contained" color="success" >Confirmar</Button>
+                        <Button sx={{ marginLeft: 'auto' }} onClick={() => navigate('/')} className="cancelar" variant="contained" color="error">Cancelar</Button>
+                    </Stack >
       </div>
     </div>
   );

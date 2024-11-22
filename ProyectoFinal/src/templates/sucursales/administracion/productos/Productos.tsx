@@ -8,7 +8,9 @@ import { useForm } from "../../../../hooks/useForm";
 import { setCategoriaActiva, setCategorias } from "../../../../redux/slices/categoriaSlice";
 import { CategoriaService } from "../../../../services/CategoriaService";
 import { ICategorias } from "../../../../endpoints/types/dtos/categorias/ICategorias";
-
+import Button from '@mui/material/Button';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { common } from '@mui/material/colors';
 const Productos = () => {
   const navigate = useNavigate();
   const { categorias } = useAppSelector((state) => state.categorias);
@@ -30,8 +32,9 @@ const Productos = () => {
         dispatch(setArticulos(JSON.parse(articulosFromStorage)));
       } else {
         try {
-          const response = await articuloService.getArticulosBySucursal(sucursalActiva!.id);
+          const response = await articuloService.getArticulosBySucursalId(sucursalActiva!.id);
           const articulos_all = response?.filter((articulo) => (articulo as IProductos).id !== undefined);
+
           
           dispatch(setArticulos(articulos_all as IProductos[]));
           localStorage.setItem(`articulos-${sucursalActiva?.id}`, JSON.stringify(articulos_all));
@@ -111,7 +114,17 @@ const Productos = () => {
   return (
     <>
       <div>
-        <button onClick={() => navigate(`/admin/crear-producto`)}>Crear Producto</button>
+        <Button variant="contained"
+                    startIcon={<AddCircleIcon />}
+                    sx={{
+                        position: 'absolute',
+                        top:'100px',
+                        right:'10px',
+                        color: common.black,
+                        backgroundColor: '#f0f0f0',
+                        height: 40,
+                        '&:hover': { backgroundColor: '#DBD8D8', color: '#000' },
+                    }} onClick={() => navigate(`/admin/crear-producto`)}>Crear Producto</Button>
       </div>
       <div>
         <h3>Filtrar por categoria:</h3>
@@ -162,25 +175,25 @@ const Productos = () => {
                   <td>{articulo.categoria.denominacion}</td>
                   <td>{articulo.habilitado ? "Sí" : "No"}</td>
                   <td>
-                    <button
+                    <Button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleSetArticuloActivo(articulo, `/admin/ver-producto`);
                       }}
                     >
                       Ver
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleSetArticuloActivo(articulo, `/admin/editar-producto`);
                       }}
                     >
                       Editar
-                    </button>
-                    <button onClick={() => handleEliminarProducto(articulo.id)}>
+                    </Button>
+                    <Button onClick={() => handleEliminarProducto(articulo.id)}>
                       Eliminar
-                    </button>
+                    </Button>
                   </td>
                 </tr>
               ))

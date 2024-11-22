@@ -9,16 +9,18 @@ import { useNavigate } from "react-router-dom";
 import { setCategoriaActiva, setCategorias } from "../../../../../redux/slices/categoriaSlice";
 import { CategoriaService } from "../../../../../services/CategoriaService";
 import { ICategorias } from "../../../../../endpoints/types/dtos/categorias/ICategorias";
-import { setAlergenos } from "../../../../../redux/slices/alergenoSlice";
+import { setAlergenoActivo, setAlergenos } from "../../../../../redux/slices/alergenoSlice";
 import { AlergenoService } from "../../../../../services/AlergenoService";
 import { IAlergenos } from "../../../../../endpoints/types/dtos/alergenos/IAlergenos";
 import { UploadImage } from "../../../../image/UploadImage";
+import Button from '@mui/material/Button';
+import { positions, Stack } from "@mui/system";
 
 export default function CrearProducto() {
 
   const { categorias, categoriaActiva } = useAppSelector((state) => state.categorias);
   const { articulos } = useAppSelector((state) => state.articulos);
-  const { alergenos } = useAppSelector((state) => state.alergenos);
+  const { alergenos, alergenoActivo } = useAppSelector((state) => state.alergenos);
   const { sucursalActiva } = useAppSelector((state) => state.sucursal);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -77,7 +79,7 @@ export default function CrearProducto() {
     idAlergenos: 0,
     imagenes: '',
     
-    categoria: '',
+    categoria: categoriaActiva?.denominacion ?? '',
     alergeno: '',
   });
 
@@ -86,11 +88,11 @@ export default function CrearProducto() {
       denominacion: values.denominacion,
       precioVenta: values.precioVenta,
       descripcion: values.descripcion,
-      habilitado: values.habilitado === "Si" ? true : false,
+      habilitado: true,
       codigo: values.codigo,
       idCategoria: values.idCategoria,
       idAlergenos: alergenosSeleccionados.map((alergeno) => alergeno.id),
-      imagenes: imagen ? [imagen] : [],
+      imagenes: imagen ? [imagen] : []
     };
 
     return articuloObj;
@@ -118,9 +120,11 @@ export default function CrearProducto() {
   };
 
   const handleToogleAlergenoActivo = (alergeno: IAlergenos) => {
-    if (alergenosSeleccionados.includes(alergeno)) {
+    if (alergenoActivo?.id === alergeno.id) {
+      dispatch(setAlergenoActivo(null));
       setAlergenosSeleccionados(alergenosSeleccionados.filter((a) => a.id !== alergeno.id));
     } else {
+      dispatch(setAlergenoActivo(alergeno));
       setAlergenosSeleccionados([...alergenosSeleccionados, alergeno]);
     }
   };
@@ -137,17 +141,21 @@ export default function CrearProducto() {
         <select id="categoria" name="categoria" value={values.categoria} onChange={handleChanges} required >
           <option value="" disabled>-Seleccione una categoria-</option>
           {categorias.map((categoria) => (
-            <option key={categoria.id} value={categoria.denominacion} onClick={() => dispatch(setCategoriaActiva(categoria))}>
+            <option key={categoria.id || categoria.denominacion} value={categoria.denominacion} onClick={() => dispatch(setCategoriaActiva(categoria))}>
               {categoria.denominacion}
             </option>
           ))}
         </select>
 
-        <label htmlFor="alergeno">Alergenos:</label>
-        <select id="alergeno" name="alergeno" required >
-          <option value="" disabled>-Seleccione un Alergeno(s)-</option>
+        <label htmlFor="alergeno">Alérgenos:</label>
+        <select id="alergeno" name="alergeno" required>
+          <option value="" disabled>-Seleccione un Alérgeno-</option>
           {alergenos.map((alergeno) => (
-            <option key={alergeno.id} value={alergeno.denominacion} onClick={() => handleToogleAlergenoActivo(alergeno)}>
+            <option
+              key={alergeno.id}
+              value={alergeno.denominacion}
+              onClick={() => handleToogleAlergenoActivo(alergeno)}
+            >
               {alergeno.denominacion}
             </option>
           ))}
@@ -175,10 +183,12 @@ export default function CrearProducto() {
           setImageObjeto={setImagen}
           typeElement="alergeno"
         />
-
-        <button onClick={() => navigate(`/admin`)} type="button">Cancelar</button>
-        <button type="submit">Confirmar</button>
       </form>
+      
+      <Stack direction="row" spacing={2}  sx={{display: 'flex',justifyContent: 'space-between', marginTop:'15px'}}>
+                        <Button sx={{positions:'absolute',left:'10px'}} type="submit" className="confirmar" variant="contained" color="success" >Confirmar</Button>
+                        <Button sx={{ right:'970px' }} onClick={() => navigate('/')} className="cancelar" variant="contained" color="error">Cancelar</Button>
+                    </Stack >
     </>
   );
 }

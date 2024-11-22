@@ -78,7 +78,7 @@ const Empresas = () => {
                       minWidth: 'unset',
                       color:'#000000',
                       borderColor: 'black',
-                      '&:hover': { backgroundColor: '#005f6a', borderColor: 'black', }, }}
+                      '&:hover': { backgroundColor: '#89A8B2', borderColor: 'black', }, }}
                       aria-label="view" size="medium" 
                     onClick={(e) => { e.stopPropagation(); handleSetEmpresaActiva(empresa, `ver-empresa`); }}>
                       <VisibilityIcon fontSize="medium"></VisibilityIcon>
@@ -91,7 +91,7 @@ const Empresas = () => {
                      minWidth: 'unset',
                      color:'#000000',
                      borderColor: 'black',
-                     '&:hover': { backgroundColor: '#005f6a', borderColor: 'black', }, }}
+                     '&:hover': { backgroundColor: '#89A8B2', borderColor: 'black', }, }}
                      aria-label="view" size="medium" 
                   onClick={(e) => { e.stopPropagation(); handleSetEmpresaActiva(empresa, `editar-empresa`) }}>
                     <EditIcon fontSize="medium"></EditIcon>

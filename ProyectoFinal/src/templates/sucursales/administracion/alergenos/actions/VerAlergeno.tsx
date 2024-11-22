@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../../../hooks/store";
 import styles from "../../../../../styles/templates/styles.module.css";
+/* Importaciones MUI */
+import Button from '@mui/material/Button';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 
@@ -34,7 +37,10 @@ const VerAlergeno = () => {
                   <p>No hay imagen disponible</p>
                 )}
             </div>
-            <button onClick={() => navigate('/admin')}>Volver</button>
+                <Button variant="contained" startIcon={<ArrowBackIcon/>} sx={{ position: "absolute",top: "10px", right: "10px",
+              backgroundColor:'white',color:'black',
+            '&:hover': { backgroundColor: '#dadada', borderColor: 'black', }, }} 
+            onClick={() => navigate('/')}>Volver</Button>
           </div>
         </div>
       )}

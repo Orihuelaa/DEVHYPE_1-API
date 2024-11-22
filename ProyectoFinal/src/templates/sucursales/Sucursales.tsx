@@ -73,14 +73,15 @@ const Sucursales = () => {
             <div className="imagen_sucursales">
               <img src={sucursal.logo} />
             </div>
-            <Stack direction="row" spacing={3} sx={{ alignItems: 'center' }}>
+            <Stack direction="row" spacing={3} sx={{ alignItems: 'center', marginTop:'auto' }}>
               <Button variant="outlined"
                 sx={{ 
                   width:40,
                   height: 40,
                   minWidth: 'unset',
                   color:'#000000',
-                  '&:hover': {backgroundColor: '#DBD8D8', }, }}
+                  borderColor: 'black',
+                  '&:hover': { backgroundColor: '#89A8B2', borderColor: 'black', }, }}
                   aria-label="view" size="medium" 
                 onClick={(e) => {e.stopPropagation(); handleSetSucursalActiva(sucursal, `/admin`)}}>
                  <AssignmentIcon fontSize="medium"></AssignmentIcon>
@@ -91,7 +92,8 @@ const Sucursales = () => {
                   height: 40,
                   minWidth: 'unset',
                   color:'#000000',
-                  '&:hover': {backgroundColor: '#DBD8D8', }, }}
+                  borderColor: 'black',
+                 '&:hover': { backgroundColor: '#89A8B2', borderColor: 'black', }, }}
                   aria-label="view" size="medium" 
                   onClick={(e) => {e.stopPropagation(); handleSetSucursalActiva(sucursal,`/editar-sucursal`)}}>
                 <EditIcon fontSize="medium"></EditIcon>
@@ -102,7 +104,8 @@ const Sucursales = () => {
                   height: 40,
                   minWidth: 'unset',
                   color:'#000000',
-                  '&:hover': {backgroundColor: '#DBD8D8', }, }}
+                  borderColor: 'black',
+                  '&:hover': {backgroundColor: '#89A8B2', borderColor: 'black', }, }}
                   aria-label="view" size="medium" 
                   onClick={(e) => {e.stopPropagation(); handleSetSucursalActiva(sucursal, `/ver-sucursal`)}}>
                   <VisibilityIcon fontSize="medium"></VisibilityIcon>
