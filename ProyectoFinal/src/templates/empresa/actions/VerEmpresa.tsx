@@ -28,8 +28,18 @@ const VerEmpresa = () => {
                 <p>Razón Social: {empresaActiva.razonSocial}</p>
                 <p>CUIT: {empresaActiva.cuit}</p>
                 <div>
-                  <p>Logo: </p>
-                  <img src={empresaActiva.logo ? empresaActiva.logo : ""} alt="Logo Empresa" />
+                  <p>Logo:</p>
+                  {empresaActiva.logo ? (
+                    <img
+                      src={empresaActiva.logo}
+                      alt={`Logo de ${empresaActiva.nombre}`}
+                      className={styles.image}
+                    />
+                  ) : (
+                    <p>No hay logo disponible</p>
+                  )
+                  }
+
                 </div>
               </div>
           </div>

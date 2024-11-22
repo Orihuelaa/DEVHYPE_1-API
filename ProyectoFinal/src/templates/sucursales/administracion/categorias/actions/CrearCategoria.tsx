@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../hooks/store";
 import { useForm } from "../../../../../hooks/useForm";
 import { setCategorias } from "../../../../../redux/slices/categoriaSlice";
 import { ICreateCategoria } from "../../../../../endpoints/types/dtos/categorias/ICreateCategoria";
+import styles from "../../../../../styles/templates/styles.module.css"
 import Button from '@mui/material/Button';
 import { Stack } from "@mui/system";
 
@@ -56,16 +57,21 @@ export default function CrearCategoria() {
 
   return (
     <>
-      <form onSubmit={onSubmit}>
-        <h2>Crear una categoria padre</h2>
+      <div className = {styles.overlay}>
+        <div className = {styles.overlay_content}>
+          <form onSubmit={onSubmit}>
+            <h2>Crear una categoria padre</h2>
 
-        <label htmlFor="denominacion" style={{fontSize:'15px'}}>Denominacion: </label>
-        <input type="text" name="denominacion" id="denominacion" value={values.denominacion} onChange={handleChanges} required/>
-        <Stack direction="row" spacing={2}  sx={{display: 'flex',justifyContent: 'space-between', marginTop:'15px'}}>
-                        <Button type="submit" className="confirmar" variant="contained" color="success" >Confirmar</Button>
-                        <Button sx={{ marginLeft: 'auto' }} onClick={() => navigate('/')} className="cancelar" variant="contained" color="error">Cancelar</Button>
-                    </Stack >
-      </form>
+            <label htmlFor="denominacion" style={{fontSize:'15px'}}>Denominacion: </label>
+            <input type="text" name="denominacion" id="denominacion" value={values.denominacion} onChange={handleChanges} required/>
+            <Stack direction="row" spacing={2}  sx={{display: 'flex',justifyContent: 'space-between', marginTop:'15px'}}>
+              <Button type="submit" className="confirmar" variant="contained" color="success" >Confirmar</Button>
+              <Button sx={{ marginLeft: 'auto' }} onClick={() => navigate('/')} className="cancelar" variant="contained" color="error">Cancelar</Button>
+            </Stack >
+          </form>
+
+        </div>
+      </div>
     </>
   );
 }

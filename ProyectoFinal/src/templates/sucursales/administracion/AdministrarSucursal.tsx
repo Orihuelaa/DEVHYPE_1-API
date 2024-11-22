@@ -36,7 +36,7 @@ export default function AdministrarSucursal() {
                             backgroundColor:'white',color:'black',
                             '&:hover': { backgroundColor: '#dadada', borderColor: 'black', },}} component={Link} to="/">Home</Button>
                     </nav>
-                    <h2>{sucursalActiva?.empresa.nombre}</h2>
+                    <h2>{sucursalActiva?.empresa.nombre + " - " + sucursalActiva?.nombre}</h2>
             </div>
             </header>
             <div  className={styles.overlay_content}>

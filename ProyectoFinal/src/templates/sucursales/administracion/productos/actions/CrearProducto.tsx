@@ -14,7 +14,8 @@ import { AlergenoService } from "../../../../../services/AlergenoService";
 import { IAlergenos } from "../../../../../endpoints/types/dtos/alergenos/IAlergenos";
 import { UploadImage } from "../../../../image/UploadImage";
 import Button from '@mui/material/Button';
-import { positions, Stack } from "@mui/system";
+import { Stack } from "@mui/system";
+import styles from "../../../../../styles/templates/styles.module.css"
 
 export default function CrearProducto() {
 
@@ -131,64 +132,70 @@ export default function CrearProducto() {
 
   return (
     <>
-      <form onSubmit={onSubmit}>
-        <h2>Crear un Articulo</h2>
+      <div className={styles.overlay}>
+        <div className={styles.overlay_content}>
+          <form onSubmit={onSubmit}>
+            <h2>Crear un Articulo</h2>
 
-        <label htmlFor="denominacion">Denominacion</label>
-        <input type="text" name="denominacion" id="denominacion" value={values.denominacion} onChange={handleChanges} required />
+            <label htmlFor="denominacion">Denominacion</label>
+            <input type="text" name="denominacion" id="denominacion" value={values.denominacion} onChange={handleChanges} required />
 
-        <label htmlFor="categoria">Categoria:</label>
-        <select id="categoria" name="categoria" value={values.categoria} onChange={handleChanges} required >
-          <option value="" disabled>-Seleccione una categoria-</option>
-          {categorias.map((categoria) => (
-            <option key={categoria.id || categoria.denominacion} value={categoria.denominacion} onClick={() => dispatch(setCategoriaActiva(categoria))}>
-              {categoria.denominacion}
-            </option>
-          ))}
-        </select>
+            <label htmlFor="categoria">Categoria:</label>
+            <select id="categoria" name="categoria" value={values.categoria} onChange={handleChanges} required >
+              <option value="" disabled>-Seleccione una categoria-</option>
+              {categorias.map((categoria) => (
+                <option key={categoria.id || categoria.denominacion} value={categoria.denominacion} onClick={() => dispatch(setCategoriaActiva(categoria))}>
+                  {categoria.denominacion}
+                </option>
+              ))}
+            </select>
 
-        <label htmlFor="alergeno">Alérgenos:</label>
-        <select id="alergeno" name="alergeno" required>
-          <option value="" disabled>-Seleccione un Alérgeno-</option>
-          {alergenos.map((alergeno) => (
-            <option
-              key={alergeno.id}
-              value={alergeno.denominacion}
-              onClick={() => handleToogleAlergenoActivo(alergeno)}
-            >
-              {alergeno.denominacion}
-            </option>
-          ))}
-        </select>
+            <label htmlFor="alergeno">Alérgenos:</label>
+            <select id="alergeno" name="alergeno" required>
+              <option value="" disabled>-Seleccione un Alérgeno-</option>
+              {alergenos.map((alergeno) => (
+                <option
+                  key={alergeno.id}
+                  value={alergeno.denominacion}
+                  onClick={() => handleToogleAlergenoActivo(alergeno)}
+                >
+                  {alergeno.denominacion}
+                </option>
+              ))}
+            </select>
 
-        <label htmlFor="precioVenta">Precio de Venta:</label>
-        <input type="number" name="precioVenta" id="precioVenta" value={values.precioVenta} onChange={handleChanges} required />
+            <label htmlFor="precioVenta">Precio de Venta:</label>
+            <input type="number" name="precioVenta" id="precioVenta" value={values.precioVenta} onChange={handleChanges} required />
 
-        <label htmlFor="codigo">Codigo:</label>
-        <input type="text" name="codigo" id="codigo" value={values.codigo} onChange={handleChanges} required />
+            <label htmlFor="codigo">Codigo:</label>
+            <input type="text" name="codigo" id="codigo" value={values.codigo} onChange={handleChanges} required />
 
-        {/* Implementar checkbox */}
-        <label htmlFor="habilitado">Habilitado:</label>
-        <select name="habilitado" id="habilitado" value={values.habilitado} onChange={handleChanges} required>
-          <option value="Si">Si</option>
-          <option value="No">No</option>
-        </select>
+            {/* Implementar checkbox */}
+            <label htmlFor="habilitado">Habilitado:</label>
+            <select name="habilitado" id="habilitado" value={values.habilitado} onChange={handleChanges} required>
+              <option value="Si">Si</option>
+              <option value="No">No</option>
+            </select>
 
-        <label htmlFor="descripcion">Descripcion:</label>
-        <input type="text" name="descripcion" id="descripcion" value={values.descripcion} onChange={handleChanges} required />
+            <label htmlFor="descripcion">Descripcion:</label>
+            <input type="text" name="descripcion" id="descripcion" value={values.descripcion} onChange={handleChanges} required />
 
-        <label htmlFor="imagen">Imagen:</label>
-        <UploadImage
-          imageObjeto={imagen}
-          setImageObjeto={setImagen}
-          typeElement="alergeno"
-        />
-      </form>
+            <label htmlFor="imagen">Imagen:</label>
+            <UploadImage
+              imageObjeto={imagen}
+              setImageObjeto={setImagen}
+              typeElement="alergeno"
+            />
+
+            <Stack direction="row" spacing={2}  sx={{display: 'flex',justifyContent: 'space-between', marginTop:'15px'}}>
+              <Button sx={{positions:'absolute',left:'10px'}} type="submit" className="confirmar" variant="contained" color="success" >Confirmar</Button>
+              <Button sx={{ right:'970px' }} onClick={() => navigate('/')} className="cancelar" variant="contained" color="error">Cancelar</Button>
+            </Stack >
+          </form>
+        </div>
+      </div>
       
-      <Stack direction="row" spacing={2}  sx={{display: 'flex',justifyContent: 'space-between', marginTop:'15px'}}>
-                        <Button sx={{positions:'absolute',left:'10px'}} type="submit" className="confirmar" variant="contained" color="success" >Confirmar</Button>
-                        <Button sx={{ right:'970px' }} onClick={() => navigate('/')} className="cancelar" variant="contained" color="error">Cancelar</Button>
-                    </Stack >
+      
     </>
   );
 }
