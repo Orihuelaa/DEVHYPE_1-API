@@ -42,7 +42,19 @@ const VerSucursal = () => {
           <p>¿Casa Matriz?: {sucursalActiva?.esCasaMatriz ? "Si" : "No"}</p>
           <p>Horario Apertura: {sucursalActiva?.horarioApertura}hs</p>
           <p>Horario Cierre: {sucursalActiva?.horarioCierre}hs</p>
-          <p>Logo: {sucursalActiva.logo ? "Tiene" : "No Tiene"}</p>
+          <div>
+          <p>Logo:</p>
+                  {sucursalActiva.logo ? (
+                    <img
+                      src={sucursalActiva.logo}
+                      alt={`Logo de ${sucursalActiva.nombre}`}
+                      className={styles.image}
+                    />
+                  ) : (
+                    <p>No hay logo disponible</p>
+                  )
+                  }
+          </div>
         </div>
       </div>
       )}

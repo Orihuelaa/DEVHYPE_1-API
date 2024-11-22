@@ -103,7 +103,8 @@ const Categorias = () => {
                                             '&:hover': { backgroundColor: '#89A8B2', borderColor: 'black' },
                                         }}
                                         aria-label="view"
-                                        size="medium" onClick={(e)=> {e.stopPropagation(); handleToggleSubCategorias(categoria); handleSetCategoriaActiva(categoria)}}> {mostrarSubCategoria?.id === categoria.id ? 'Ocultar' : 'Mostrar'}  <AssignmentReturnedIcon fontSize="medium" /></Button>
+                                        size="medium" onClick={(e)=> {e.stopPropagation(); handleToggleSubCategorias(categoria); handleSetCategoriaActiva(categoria)}}> {mostrarSubCategoria?.id === categoria.id } 
+                                        <AssignmentReturnedIcon fontSize="medium"/> </Button>
                 <Button  variant="outlined"
                                         sx={{
                                             width: 65,

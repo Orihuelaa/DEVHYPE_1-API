@@ -144,12 +144,9 @@ const Alergenos = () => {
                                             borderColor: 'black',
                                             '&:hover': { backgroundColor: '#89A8B2', borderColor: 'black' },
                                         }}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleDeleteAlergeno(alergeno.id);
-                                        }}
+                                        onClick={(e) => {e.stopPropagation(); handleDeleteAlergeno(alergeno.id);}}
                                     >
-                                        <DeleteIcon fontSize="medium" />
+                                    <DeleteIcon fontSize="medium" />
                                     </Button>
                                 </Stack>
                             </li>

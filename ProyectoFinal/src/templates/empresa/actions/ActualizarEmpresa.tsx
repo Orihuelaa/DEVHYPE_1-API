@@ -97,11 +97,12 @@ const ActualizarEmpresa = () => {
             setImage={setLogo}  // Función para actualizar la imagen
             typeElement="empresa"  // Tipo de elemento (si es necesario para la eliminación)
           />
-          </form>
           <Stack direction="row" spacing={2}  sx={{display: 'flex',justifyContent: 'space-between', marginTop:'15px'}}>
               <Button type="submit" className="confirmar" variant="contained" color="success" >Confirmar</Button>
               <Button sx={{ marginLeft: 'auto' }} onClick={() => navigate('/')} className="cancelar" variant="contained" color="error">Cancelar</Button>
           </Stack >
+          </form>
+          
       </div>
     </div>
   );

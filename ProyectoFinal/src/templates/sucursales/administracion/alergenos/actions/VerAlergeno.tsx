@@ -13,7 +13,7 @@ const VerAlergeno = () => {
 
   if (!alergenoActivo) {
     console.log('No se pudo obtener el alergeno');
-    navigate("/administracion/alergenos");
+    navigate("/admin");
   }
 
   return (
@@ -40,7 +40,7 @@ const VerAlergeno = () => {
                 <Button variant="contained" startIcon={<ArrowBackIcon/>} sx={{ position: "absolute",top: "10px", right: "10px",
               backgroundColor:'white',color:'black',
             '&:hover': { backgroundColor: '#dadada', borderColor: 'black', }, }} 
-            onClick={() => navigate('/')}>Volver</Button>
+            onClick={() => navigate('/admin')}>Volver</Button>
           </div>
         </div>
       )}
