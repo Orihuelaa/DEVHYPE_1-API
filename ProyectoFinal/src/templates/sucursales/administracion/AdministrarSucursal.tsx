@@ -1,16 +1,15 @@
 import Alergenos from "./alergenos/Alergenos";
 import Categorias from "./categorias/Categorias";
 import Productos from "./productos/Productos";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
-//import styles from "../../../styles/templates/styles.module.css"
+import styles from "../../../styles/templates/styles.module.css";
 import Button from '@mui/material/Button';
 import { Stack } from "@mui/system";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { setElementActive } from "../../../redux/slices/elementActiveSlice";
 
 export default function AdministrarSucursal() {
-    const navigate = useNavigate();
     const {elementActive} = useAppSelector((state) => state.elementActive);
     const dispatch = useAppDispatch();
     const {sucursalActiva} = useAppSelector((state)=> state.sucursal)
@@ -33,19 +32,27 @@ export default function AdministrarSucursal() {
             <header>
             <div>
                     <nav>
-                        <Link to={'/'}>Home</Link> {/* Este deberia ser un voton flecha para volver */}
+                            <Button variant="contained" startIcon={<ArrowBackIcon/>} sx={{ position: "absolute",top: "10px", right: "10px",
+                            backgroundColor:'white',color:'black',
+                            '&:hover': { backgroundColor: '#dadada', borderColor: 'black', },}} component={Link} to="/">Home</Button>
                     </nav>
                     <h2>{sucursalActiva?.empresa.nombre}</h2>
             </div>
             </header>
-            <div>
+            <div  className={styles.overlay_content}>
                 <aside>
                     <h2>Administracion</h2>
 
                     <Stack direction="row" spacing={2}>
-                        <Button variant="contained" sx={{width:100}} onClick={() => (dispatch(setElementActive('Categorias')))} type="button">Categorias</Button>
-                        <Button variant="contained" sx={{width:100}} onClick={() => (dispatch(setElementActive('Productos')))} type="button">Productos</Button>
-                        <Button variant="contained" sx={{width:100}} onClick={() => (dispatch(setElementActive('Alergenos')))} type="button">Alergenos</Button>
+                        <Button variant="contained" sx={{width:100, fontSize:'10px', color:'black', 
+                                    backgroundColor: '#f0f0f0', height: 40,
+                                    '&:hover': {backgroundColor: '#DBD8D8',color: '#000' },}} onClick={() => (dispatch(setElementActive('Categorias')))} type="button">Categorias</Button>
+                        <Button variant="contained" sx={{width:100, fontSize:'10px', color:'black', 
+                                    backgroundColor: '#f0f0f0', height: 40,
+                                    '&:hover': {backgroundColor: '#DBD8D8', fontSize:'10px', color: '#000' },}} onClick={() => (dispatch(setElementActive('Productos')))} type="button">Productos</Button>
+                        <Button variant="contained" sx={{width:100, color:'black', 
+                                    backgroundColor: '#f0f0f0', height: 40,
+                                    '&:hover': {backgroundColor: '#DBD8D8',color: '#000' },}} onClick={() => (dispatch(setElementActive('Alergenos')))} type="button">Alergenos</Button>
                     </Stack>
                     
                 </aside>
@@ -53,9 +60,6 @@ export default function AdministrarSucursal() {
                     {handleRenderComponent()}
                 </main>
             </div>
-            <footer>
-                <Button className="boton-volver" variant="contained" startIcon={<ArrowBackIcon/>} onClick={() => navigate('/')}>Volver</Button>
-            </footer>
         </>
     )
 }

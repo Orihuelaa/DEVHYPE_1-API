@@ -4,7 +4,8 @@ import { CategoriaService } from "../../../../../services/CategoriaService";
 import { useForm } from "../../../../../hooks/useForm";
 import { IUpdateCategoria } from "../../../../../endpoints/types/dtos/categorias/IUpdateCategoria";
 import { setSubCategorias } from "../../../../../redux/slices/subCategoriaSlice";
-
+import Button from '@mui/material/Button';
+import { Stack } from "@mui/system";
 export default function ActualizarSubCategoria() {
 
   const navigate = useNavigate();
@@ -63,8 +64,10 @@ export default function ActualizarSubCategoria() {
       <label htmlFor="denominacion"></label>
       <input type="text" name="denominacion" id="denominacion" value={values.denominacion} onChange={handleChanges}/>
       
-      <button onClick={()=> navigate(`/admin`)} type="button">Cancelar</button>
-      <button type="submit">Confirmar</button>
+      <Stack direction="row" spacing={2}  sx={{display: 'flex',justifyContent: 'space-between', marginTop:'15px'}}>
+                        <Button type="submit" className="confirmar" variant="contained" color="success" >Confirmar</Button>
+                        <Button sx={{ marginLeft: 'auto' }} onClick={() => navigate('/')} className="cancelar" variant="contained" color="error">Cancelar</Button>
+                    </Stack >
     </form>
   )
 }

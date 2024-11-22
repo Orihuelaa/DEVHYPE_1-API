@@ -8,6 +8,8 @@ import { useAppDispatch, useAppSelector } from "../../../../../hooks/store";
 import { IImagen } from "../../../../../endpoints/types/IImagen";
 import { UploadImage } from "../../../../image/UploadImage";
 import styles from "../../../../../styles/templates/styles.module.css";
+import Button from '@mui/material/Button';
+import { Stack } from "@mui/system";
 
 
 const CrearAlergeno = () => {
@@ -59,8 +61,8 @@ const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 
   return (
     <>
-    <div className={styles.container}>
-      <div className={styles.container_f}>
+    <div className={styles.overlay}>
+      <div className={styles.overlay_content}>
         <form onSubmit={onSubmit}>
           <h2>Crear Alergeno</h2>
           <label htmlFor="denominacion">Denominacion:</label>
@@ -79,12 +81,11 @@ const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
             setImageObjeto={setImagen}
             typeElement="alergeno"
           />
-          
-          <div>
-            <button onClick={() => navigate('/admin')} className="cancelar">Cancelar</button>
-            <button type="submit">Crear</button>
-          </div>
         </form>
+        <Stack direction="row" spacing={2}  sx={{display: 'flex',justifyContent: 'space-between', marginTop:'15px'}}>
+                        <Button type="submit" className="confirmar" variant="contained" color="success" >Confirmar</Button>
+                        <Button sx={{ marginLeft: 'auto' }} onClick={() => navigate('/')} className="cancelar" variant="contained" color="error">Cancelar</Button>
+                    </Stack >
       </div>
     </div>
     </>

@@ -97,7 +97,7 @@ export class ArticuloService extends BackendClient<IProductos | ICreateProducto 
         }
     }
 
-    async getArticulosBySucursal(idSucursal: number): Promise<IProductos[] | null> {
+    async getArticulosBySucursalId(idSucursal: number): Promise<IProductos[] | null> {
         Swal.fire({
             title: "Obteniendo Productos... ",
             allowOutsideClick: false,
@@ -159,3 +159,6 @@ export class ArticuloService extends BackendClient<IProductos | ICreateProducto 
 
 
 }
+
+
+

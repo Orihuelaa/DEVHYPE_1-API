@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/store";
 import { ICategorias } from "../../../../endpoints/types/dtos/categorias/ICategorias";
 import { setSubCategoriaActiva, setSubCategorias } from "../../../../redux/slices/subCategoriaSlice";
 import { useNavigate } from "react-router-dom";
-
+import Button from '@mui/material/Button';
 const SubCategorias = () => {
 
     const {sucursalActiva} = useAppSelector((state) => state.sucursal); 
@@ -49,7 +49,9 @@ const SubCategorias = () => {
             {subCategorias.map((subCategoria) => (
             <li key={subCategoria.id}>
                 <span>{subCategoria.denominacion}</span>
-                <button onClick={() =>{dispatch(setSubCategoriaActiva(subCategoria)) ; navigate(`/admin/editar-subcategoria`)}}>Editar Subcategoría</button>
+                <Button sx={{ color:'#000000',
+                  borderColor: 'black',
+                  '&:hover': {backgroundColor: '#89A8B2', border: 'black',}, }} onClick={() =>{dispatch(setSubCategoriaActiva(subCategoria)) ; navigate(`/admin/editar-subcategoria`)}}>Editar Subcategoría</Button>
             </li>
             ))}
         </ul>

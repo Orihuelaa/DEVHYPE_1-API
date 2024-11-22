@@ -5,6 +5,14 @@ import { useEffect } from "react";
 import { setCategoriaActiva, setCategorias, setShowSubCategoria } from "../../../../redux/slices/categoriaSlice";
 import { ICategorias } from "../../../../endpoints/types/dtos/categorias/ICategorias";
 import SubCategorias from "./SubCategorias";
+import Stack from '@mui/material/Stack';
+import EditIcon from '@mui/icons-material/Edit';
+import AssignmentReturnedIcon from '@mui/icons-material/AssignmentReturned';
+import Button from '@mui/material/Button';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { common } from '@mui/material/colors';
+import AddIcon from '@mui/icons-material/Add';
+
 
 const Categorias = () => {
   
@@ -62,18 +70,67 @@ const Categorias = () => {
   return (
     <>
       <div>
-        <button onClick={() => navigate(`/admin/crear-categoria`)}>Crear Categoría</button>
+        <Button variant="contained"
+                    startIcon={<AddCircleIcon />}
+                    sx={{
+                        position: 'absolute',
+                        top:'100px',
+                        right:'10px',
+                        color: common.black,
+                        backgroundColor: '#f0f0f0',
+                        height: 40,
+                        '&:hover': { backgroundColor: '#DBD8D8', color: '#000' },}} 
+                        onClick={() => navigate(`/admin/crear-categoria`)}>Crear Categoría</Button>
       </div>
       <ul>
-        {categorias.map((categoria) => (
-            <li key={categoria.id}>
-              <span>{categoria.denominacion}</span>
-              <button onClick={(e)=> {e.stopPropagation(); handleToggleSubCategorias(categoria); handleSetCategoriaActiva(categoria)}}> {mostrarSubCategoria?.id === categoria.id ? 'Ocultar' : 'Mostrar'} Subcategorias</button>
-              <button onClick={(e) => {e.stopPropagation(); handleSetCategoriaActiva(categoria, `/admin/editar-categoria`);}}>Actualizar Categoría</button>
-              <button onClick={(e) => {e.stopPropagation(); handleSetCategoriaActiva(categoria, `/admin/crear-subcategoria`);}}>Agregar Subcategoría</button>
-              {mostrarSubCategoria?.id === categoria.id && <SubCategorias />}
-            </li>
-        ))}
+      <Stack 
+          direction="column"
+          width={1500}
+          spacing={2}
+          justifyContent="end"
+          alignItems="center" 
+          sx={{ backgroundColor: '#B3C8CF'  }}>
+             {categorias.map((categoria) => (
+              <li key={categoria.id}>
+                <span>{categoria.denominacion}</span>
+                <Button  variant="outlined"
+                                        sx={{
+                                            width: 65,
+                                            height: 65,
+                                            minWidth: 'unset',
+                                            color: '#000000',
+                                            borderColor: 'black',
+                                            '&:hover': { backgroundColor: '#89A8B2', borderColor: 'black' },
+                                        }}
+                                        aria-label="view"
+                                        size="medium" onClick={(e)=> {e.stopPropagation(); handleToggleSubCategorias(categoria); handleSetCategoriaActiva(categoria)}}> {mostrarSubCategoria?.id === categoria.id ? 'Ocultar' : 'Mostrar'}  <AssignmentReturnedIcon fontSize="medium" /></Button>
+                <Button  variant="outlined"
+                                        sx={{
+                                            width: 65,
+                                            height: 65,
+                                            minWidth: 'unset',
+                                            color: '#000000',
+                                            borderColor: 'black',
+                                            '&:hover': { backgroundColor: '#89A8B2', borderColor: 'black' },
+                                        }}
+                                        aria-label="view"
+                                        size="medium" onClick={(e) => {e.stopPropagation(); handleSetCategoriaActiva(categoria, `/admin/editar-categoria`);}}> <EditIcon fontSize="medium" /></Button>
+                <Button  variant="outlined"
+                                        sx={{
+                                            width: 65,
+                                            height: 65,
+                                            minWidth: 'unset',
+                                            color: '#000000',
+                                            borderColor: 'black',
+                                            '&:hover': { backgroundColor: '#89A8B2', borderColor: 'black' },
+                                        }}
+                                        aria-label="view"
+                                        size="medium" onClick={(e) => {e.stopPropagation(); handleSetCategoriaActiva(categoria, `/admin/crear-subcategoria`);}}><AddIcon fontSize="medium" /></Button>
+                {mostrarSubCategoria?.id === categoria.id && <SubCategorias />}
+              </li>
+          ))}
+      </Stack>
+         
       </ul>
     </>
   );
