@@ -1,7 +1,5 @@
 import { useNavigate} from "react-router-dom";
-import styles from "../../../styles/templates/styles.module.css"
-import useImage from "../../../hooks/useImage";
-import { ImageService } from "../../../services/ImageService";
+import styles from "../../../styles/templates/styles.module.css";
 import { useForm } from "../../../hooks/useForm";
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
 import { SucursalService } from "../../../services/SucursalService";
@@ -10,80 +8,79 @@ import { setSucursales } from "../../../redux/slices/sucursalSlice";
 import Paises from "./formComponents/Paises";
 import Provincias from "./formComponents/Provincias";
 import Localidades from "./formComponents/Localidades";
+import { useState } from "react";
+import { UploadImage } from "../../image/UploadImage";
+import Button from '@mui/material/Button';
+import { Stack } from "@mui/system";
 
 const CrearSucursal = () => {
     
     const navigate = useNavigate();
     const {sucursales} = useAppSelector(state => state.sucursal);
+    const {empresaActiva} = useAppSelector(state => state.empresa);
+    const {localidadActiva} = useAppSelector(state => state.localidades);
     const dispatch = useAppDispatch();
     const sucursalService = new SucursalService("sucursales");
-    const imageService = new ImageService("images");
-
 
     // Configura el hook personalizado useForm
     const { values, handleChanges, resetForm } = useForm({
         nombre: '',
-        idEmpresa: 0,
-        eliminado: '',
-        latitud: 0,
-        longitud: 0,
-        logo: '',
-        categorias: 0,
-        esCasaMatriz: '',
         horarioApertura: '',
         horarioCierre: '',
+        esCasaMatriz: '',
+        latitud: 0,
+        longitud: 0,
 
-        domicilioId: 0,
         domicilioCalle: '',
         domicilioNumero: 0,
         domicilioCp: 0,
         domicilioPiso: 0,
-        domicilioEliminado: '',
         domicilioNroDpto: 0,
+        localidadId: localidadActiva?.id ?? 0,
 
-        localidadId: 0,
-        localidadNombre: '',
-        
-        provinciaId: 0,
-        provinciaNombre: '',
-        
-        paisId: 0,
-        paisNombre: ''
+        idEmpresa: empresaActiva?.id ?? 0,
+        logo: ''
     });
 
-    // Hook personalizado para manejar imágenes
-    const { preview, handleImageChange } = useImage({ imageService, setValue: resetForm });
+    const [logo, setLogo] = useState<string | null>(null);
 
     const crteateSucursalObj = () => {
         const sucursalObj: ICreateSucursal = {
             nombre: values.nombre,
-            idEmpresa: Number(values.idEmpresa), // Asegúrate de convertirlo a un número
-            latitud: Number(values.latitud),
-            longitud: Number(values.longitud),
-            logo: values.logo,
-            esCasaMatriz: values.esCasaMatriz === "Si" ? true : false,
             horarioApertura: values.horarioApertura,
             horarioCierre: values.horarioCierre,
+            esCasaMatriz: values.esCasaMatriz === "Si" ? true : false,
+            latitud: values.latitud,
+            longitud: values.longitud,
+            
             domicilio: {
                 calle: values.domicilioCalle,
-                numero: Number(values.domicilioNumero),
-                cp: Number(values.domicilioCp),
-                piso: Number(values.domicilioPiso),
-                nroDpto: Number(values.domicilioNroDpto),
+                numero: values.domicilioNumero,
+                cp: values.domicilioCp,
+                piso: values.domicilioPiso,
+                nroDpto: values.domicilioNroDpto,
                 idLocalidad: values.localidadId,
-            }
+            },
+            idEmpresa: values.idEmpresa,
+            logo: logo,
         };
         return sucursalObj;
-    };
+    }
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        
+        const sucursalObj = crteateSucursalObj();
+        const sucursalData: ICreateSucursal = {
+            ...sucursalObj,
+            logo: logo || "",
+        };
         try {
-            const sucursalObj = crteateSucursalObj();
-            const nuevaSucursal = await sucursalService.createSucursal(sucursalObj);
+            const nuevaSucursal = await sucursalService.createSucursal(sucursalData);
             if (nuevaSucursal !== null) {
                 dispatch(setSucursales([...sucursales, nuevaSucursal]));
                 resetForm();
+                setLogo(null);
             } else {
                 console.log("Error al crear la empresa");
             }
@@ -213,25 +210,18 @@ const CrearSucursal = () => {
                         />
 
                         <label htmlFor="logo">Ícono de la Sucursal:</label>
-                        <input 
-                            type="file"
-                            id="logo"
-                            name="logo"
-                            onChange={handleImageChange}
-                            accept="image/*"
+                        <UploadImage
+                            image={logo}
+                            setImage={setLogo}
+                            typeElement="empresa"
                         />
 
-                        {preview && (
-                            <div>
-                                <img src={preview} alt="Vista previa del ícono" />
-                            </div>
-                        )}
-
-                        <div>
-                            <button type="submit" className="confirmar">Confirmar</button>
-                            <button onClick={() => navigate('/')} className="cancelar">Cancelar</button>
-                        </div>
+                        <Stack direction="row" spacing={2}  sx={{display: 'flex',justifyContent: 'space-between', marginTop:'15px'}}>
+                            <Button type="submit" className="confirmar" variant="contained" color="success" >Confirmar</Button>
+                            <Button sx={{ marginLeft: 'auto' }} onClick={() => navigate('/')} className="cancelar" variant="contained" color="error">Cancelar</Button>
+                        </Stack >
                     </form>
+                    
                 </div>
             </div>
         </>

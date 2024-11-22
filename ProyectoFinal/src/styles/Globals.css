@@ -1,23 +1,19 @@
 /* Estilo básico de HTML y body */
 
-*{
-    font-family: Arial, Helvetica, sans-serif;
-    color: #120907;
-}
-
 html, body, #root {
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
     overflow: hidden;
+     font-family: 'Roboto';
 }
 
 html{
     font-size: 62.5%;
     box-sizing: border-box;
     scroll-snap-type: y mandatory;
-    background-color: #003142;
+    background-color: #F1F0E8;
 }
 
 h1{
@@ -26,7 +22,7 @@ h1{
 
 h2{
     font-size: 2.2rem;
-    color: #fffaf2;
+    color: #000;
 }
 
 h3{
@@ -38,29 +34,13 @@ a, ul, li{
     list-style: none;
 }
 
-p, button, li{
+p, li{
     font-size: 1.4rem;
 }
 
-button{
-    display: inline-block;
-  vertical-align: middle;
-  -webkit-transform: perspective(1px) translateZ(0);
-  transform: perspective(1px) translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  overflow: hidden;
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  -webkit-transition-property: color, background-color;
-  transition-property: color, background-color;
-  color: black;
-  background-color: #fffaf2;
-}
 
-button:hover{
-    background-color: #067fa7;
-  color: white;
-}
+
+/* formularios */
 
 input[type="time"] {
     color: black;
@@ -72,22 +52,59 @@ input[type="text"] {
     font-size: 12px;
 }
 
-.confirmar{
-    background-color: #2F961A;
-    color: #fff;
+form {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 0.5rem 1rem;
+    width: 700px;
+    background-color: #89A8B2;
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+  
+  form label {
+    grid-column: 1;
+    align-self: center;
+    font-weight: bold;
+    color: #ffffff;
+  }
+  
+  form input,
+  form select,
+  form input[type="file"] {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+.linea-divisoria {
+    width: 5px; /* Ancho de la línea */
+    background-color: #ccc; /* Color de la línea */
+    height: 100%; /* Para que abarque toda la altura del contenedor */
+  }
+  .boton_empresa{
+    width: 100%;
+  }
+  .encabezado_empresa,.encabezado_sucursales{
+    display: flex; /* Permite alinear elementos en fila */
+    flex-direction: column; /* Cambia a columna si deseas que el botón quede abajo del título */
+    justify-content: center; /* Centra los elementos verticalmente */
+    align-items: center; /* Centra los elementos horizontalmente */
+    gap: 1rem; /* Espacio entre el título y el botón */
+    padding: 2rem 0; /* Opcional: Espacio interno superior e inferior */
 }
-
-.confirmar:hover{
-    background-color: #135407;
-    color: #fff;
+.imagen_sucursales {
+  width: 10%;  /* El contenedor ocupará todo el ancho disponible */
+  max-width: 300px; /* Puedes ajustar un límite máximo de tamaño */
+  height: auto; /* Mantiene la relación de aspecto de la imagen */
+  display: flex;
+  justify-content: center; /* Centra la imagen horizontalmente */
+  align-items: center; /* Centra la imagen verticalmente */
+  overflow: hidden; /* Oculta cualquier parte de la imagen que se desborde */
 }
-
-.cancelar{
-    background-color: #961A1A;
-    color: #fff;
-}
-
-.cancelar:hover{
-    background-color: #740303;
-    color: #fff;
+/* Estilos para la imagen dentro del contenedor */
+.imagen_sucursales img {
+  width: 100%; /* Ajusta el ancho de la imagen al contenedor */
+  height: auto; /* Mantiene la relación de aspecto */
+  object-fit: contain; /* La imagen se ajusta sin recortarse, pero podría dejar espacio vacío */
 }

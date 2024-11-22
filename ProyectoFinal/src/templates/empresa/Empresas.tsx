@@ -6,6 +6,12 @@ import { EmpresaService } from "../../services/EmpresaService";
 import { setEmpresaActiva, setEmpresas } from "../../redux/slices/empresaSlice";
 import { useEffect } from "react";
 import Sucursales from "../sucursales/Sucursales";
+/* MUI importaciones */
+import Button from '@mui/material/Button';
+import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { common } from '@mui/material/colors';
 
 const Empresas = () => {
 
@@ -46,26 +52,61 @@ const Empresas = () => {
     dispatch(setEmpresaActiva(empresa));
     if (route) navigate(route);
   };
-
   return (
-    <aside>
-        <h2>Empresas</h2>
-        <button style={{padding: "auto"}} onClick={() => navigate("/crear-empresa")}>Crear Empresa</button>
-          <ul className={styles.container_f}>
-            {empresas.map((empresa: IEmpresa) => (
-              <li key={empresa.id} onClick={() => handleSetEmpresaActiva(empresa)}>
-                <h3>{empresa.nombre}</h3>
-                <div> {/* e.stopPropagation(): // Evita que el clic en este botón active el evento de propagacion del contenedor <li> */}
-                  <button onClick={(e) => {e.stopPropagation(); handleSetEmpresaActiva(empresa, `ver-empresa`);}}> Ver </button>
-                  <button onClick={(e) => {e.stopPropagation(); handleSetEmpresaActiva(empresa, `editar-empresa`)}}>Editar</button>
-                </div>
-              </li>
-            ))}
-          </ul>
-
-      {empresaActiva && <Sucursales />}
-    </aside>
+    <div className={styles.layoutContainer}>
+      <aside className={styles.empresas}>
+        <div className="encabezado_empresa">
+            <h2>Empresas</h2>
+            <Button variant="contained" startIcon={<AddCircleIcon />} 
+                sx={{ color: common.black, 
+                backgroundColor: '#f0f0f0', 
+                height: 40,
+                '&:hover': {backgroundColor: '#DBD8D8',color: '#000' }, }}onClick={() => navigate("/crear-empresa")}>
+              Crear Empresa
+            </Button>
+        </div>
+        <ul className={styles.container_f}>
+          {empresas.map((empresa: IEmpresa) => (
+            <li className="boton_empresa" key={empresa.id} onClick={() => handleSetEmpresaActiva(empresa)}>
+              <h3>{empresa.nombre}</h3>
+              <div>
+                <Button  
+                    variant="outlined"
+                    sx={{ 
+                      width:35,
+                      height: 35,
+                      minWidth: 'unset',
+                      color:'#000000',
+                      borderColor: 'black',
+                      '&:hover': { backgroundColor: '#89A8B2', borderColor: 'black', }, }}
+                      aria-label="view" size="medium" 
+                    onClick={(e) => { e.stopPropagation(); handleSetEmpresaActiva(empresa, `ver-empresa`); }}>
+                      <VisibilityIcon fontSize="medium"></VisibilityIcon>
+                </Button>
+                <Button 
+                   variant="outlined"
+                   sx={{ 
+                     width:35,
+                     height: 35,
+                     minWidth: 'unset',
+                     color:'#000000',
+                     borderColor: 'black',
+                     '&:hover': { backgroundColor: '#89A8B2', borderColor: 'black', }, }}
+                     aria-label="view" size="medium" 
+                  onClick={(e) => { e.stopPropagation(); handleSetEmpresaActiva(empresa, `editar-empresa`) }}>
+                    <EditIcon fontSize="medium"></EditIcon>
+                </Button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </aside>
+      <section className={styles.sucursales}>
+        {empresaActiva && <Sucursales />}
+      </section>
+    </div>
   );
+  
 };
 
 export default Empresas

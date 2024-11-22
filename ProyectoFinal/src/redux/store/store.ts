@@ -7,17 +7,21 @@ import provinciaReducer from "../slices/provinciaSlice"
 import localidadReducer from "../slices/localidadSlice"
 import alergenoReducer from "../slices/alergenoSlice"
 import articuloReducer from "../slices/articuloSlice"
+import subCategoriaReducer from "../slices/subCategoriaSlice"
+import elementActiveReducer from "../slices/elementActiveSlice"
 
 export const store = configureStore({
   reducer: {
     empresa: empresaReducer,
     sucursal: sucursalReducer,
     categorias: categoriaReducer,
+    subCategorias: subCategoriaReducer,
     paises: paisReducer,
     provincias: provinciaReducer,
     localidades: localidadReducer,
     alergenos: alergenoReducer,
-    articulos: articuloReducer
+    articulos: articuloReducer,
+    elementActive: elementActiveReducer
   },
 });
 

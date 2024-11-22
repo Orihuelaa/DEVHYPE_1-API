@@ -7,7 +7,7 @@
     overflow-y: hidden; /* Oculta el scrollbar por defecto */
 }
 
-.appContainer aside, .appContainer main {
+.appContainer main {
     width: 100%;
     height: 100%;
     display: flex;
@@ -17,11 +17,22 @@
     padding: .6rem; 
     box-sizing: border-box; /* Asegura que padding no afecte el ancho total */
 }
-
-.appContainer aside{
-    border: 1px solid #1b223d;
+.layoutContainer {
+    display: grid;
+    grid-template-columns: 1.5fr 2fr;
+    gap: 2rem;
+    align-items: start;
 }
 
+  .empresas {
+    border-right: 1px solid #ccc; /* Separador visual entre empresas y sucursales */
+    padding-right: 5rem;
+    padding-left: 5rem;
+  }
+  
+  .sucursales {
+    padding-left: 1rem;
+  }
 /* ------------------------------------------------------------------------ */
 
 /* Estilos para el scrollbar */
@@ -66,20 +77,20 @@
     align-items: center;
     gap: 4rem;
 }
+.container_f > li {
+    width: 90%;
+    min-width: 250px;
+    max-width: 300px;
+    padding: 1.5rem;
+    font-size: 1.2rem;
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+    background-color: #B3C8CF;
+}
 
-.container_f > li{
-    width: 80%;
-    min-width: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center;
-    text-align: center;
-    box-sizing: border-box;
-    padding: 0.2rem;
-    border: 1px solid #000;
-    border-radius: .4rem;
-    background-color: #007b8b;
+.container_f > li:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Vista Sucursales */
@@ -89,35 +100,35 @@
     margin: 0; 
     text-align: center; 
     display: grid;
-    grid-template-columns: repeat(2, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, minmax(290px, 1fr));
     gap: 4rem;
+}
+
+.container_g > li > h3 {
+    margin-bottom: 1rem; /* Espaciado para el título */
 }
 
 .container_g > li {
     width: 100%;
-    height: 100%;
+    height: 400px;
     display: flex;
     flex-direction: column;
-    justify-content: center; 
+    justify-content: space-between; 
     align-items: center;
     text-align: center;
     box-sizing: border-box;
     padding: 0.2rem;
     border: 1px solid #000;
     border-radius: .4rem;
-    background-color: #007b8b;
+    background-color: #B3C8CF;
 }
 
 .container_f > li > div, .container_g > li > div {
-    width: 80%;
+    width: 90%;
     margin: 1rem;
     display: flex;
     gap: 1rem;
     justify-content: space-around;
-}
-
-.container_f > li > div > button, .container_g > li > div > button {
-    padding: .4rem .8rem;
 }
 
 @media (max-width: 900px) {
@@ -138,20 +149,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #112a34; /* Fondo negro semi-transparente */
+    background-color: #F1F0E8; /* Fondo negro semi-transparente */
     z-index: 999; /* Asegura que esté encima de otros elementos */
     display: flex; /* Para centrar el contenido */
     justify-content: center; /* Centra horizontalmente */
     align-items: center; /* Centra verticalmente */
 }
 
-/* Estilo del contenido de la superposición */
-.overlay_content {
-    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente */
-    padding: 20px;
-    border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra para el efecto de elevación */
-}
 
 /* Estilo de la superposición */
 .overlay {
@@ -169,12 +173,9 @@
 
 /* Estilo del contenido de la superposición */
 .overlay_content {
-    background-color: #007b8b; /* Fondo blanco semi-transparente */
+    background-color: #B3C8CF;/* Fondo blanco semi-transparente */
     padding: 20px; /* Espacio interno para el contenido */
     border-radius: 8px; /* Bordes redondeados */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra que da profundidad y elevación */
     z-index: 1000; /* Asegura que el contenido esté por encima del overlay */
 }
-
-
-

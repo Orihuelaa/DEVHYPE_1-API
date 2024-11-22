@@ -1,19 +1,21 @@
-import { useState } from "react";
 import Alergenos from "./alergenos/Alergenos";
 import Categorias from "./categorias/Categorias";
 import Productos from "./productos/Productos";
-import { Link, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../../hooks/store";
-//import styles from "../../../styles/templates/styles.module.css"
-
+import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../hooks/store";
+import styles from "../../../styles/templates/styles.module.css";
+import Button from '@mui/material/Button';
+import { Stack } from "@mui/system";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { setElementActive } from "../../../redux/slices/elementActiveSlice";
 
 export default function AdministrarSucursal() {
-    const navigate = useNavigate();
-    const [active, setActive] = useState<string>('');
+    const {elementActive} = useAppSelector((state) => state.elementActive);
+    const dispatch = useAppDispatch();
     const {sucursalActiva} = useAppSelector((state)=> state.sucursal)
 
-    const handleRenderComponent = (active: string) => {
-        switch (active) {
+    const handleRenderComponent = () => {
+        switch (elementActive) {
             case 'Categorias':
                 return <Categorias />;
             case 'Alergenos':
@@ -26,33 +28,38 @@ export default function AdministrarSucursal() {
     }
 
     return (
-      <>
-        <header>
-           <div>
-                <nav>
-                    <Link to={'/'}>Home</Link> {/* Este deberia ser un voton flecha para volver */}
-                </nav>
-                <h2>{sucursalActiva?.empresa.nombre}</h2>
-           </div>
-        </header>
-        <div>
-            <aside>
-                <h2>Administracion</h2>
-                <div>
-                    <ul>
-                        <li><button onClick={() => (setActive('Categorias'))} type="button">Categorias</button></li>
-                        <li><button onClick={() => (setActive('Productos'))} type="button">Productos</button></li>
-                        <li> <button onClick={() => (setActive('Alergenos'))} type="button">Alergenos</button></li>
-                    </ul>
-                </div>
-            </aside>
-            <main>
-                {handleRenderComponent(active)}
-            </main>
-        </div>
-        <footer>
-            <button onClick={() => navigate(`/`)} type="button">Volver</button>
-        </footer>
-      </>
-    );
+        <>
+            <header>
+            <div>
+                    <nav>
+                            <Button variant="contained" startIcon={<ArrowBackIcon/>} sx={{ position: "absolute",top: "10px", right: "10px",
+                            backgroundColor:'white',color:'black',
+                            '&:hover': { backgroundColor: '#dadada', borderColor: 'black', },}} component={Link} to="/">Home</Button>
+                    </nav>
+                    <h2>{sucursalActiva?.empresa.nombre + " - " + sucursalActiva?.nombre}</h2>
+            </div>
+            </header>
+            <div  className={styles.overlay_content}>
+                <aside>
+                    <h2>Administracion</h2>
+
+                    <Stack direction="row" spacing={2}>
+                        <Button variant="contained" sx={{width:100, fontSize:'10px', color:'black', 
+                                    backgroundColor: '#f0f0f0', height: 40,
+                                    '&:hover': {backgroundColor: '#DBD8D8',color: '#000' },}} onClick={() => (dispatch(setElementActive('Categorias')))} type="button">Categorias</Button>
+                        <Button variant="contained" sx={{width:100, fontSize:'10px', color:'black', 
+                                    backgroundColor: '#f0f0f0', height: 40,
+                                    '&:hover': {backgroundColor: '#DBD8D8', fontSize:'10px', color: '#000' },}} onClick={() => (dispatch(setElementActive('Productos')))} type="button">Productos</Button>
+                        <Button variant="contained" sx={{width:100, color:'black', 
+                                    backgroundColor: '#f0f0f0', height: 40,
+                                    '&:hover': {backgroundColor: '#DBD8D8',color: '#000' },}} onClick={() => (dispatch(setElementActive('Alergenos')))} type="button">Alergenos</Button>
+                    </Stack>
+                    
+                </aside>
+                <main>
+                    {handleRenderComponent()}
+                </main>
+            </div>
+        </>
+    )
 }
